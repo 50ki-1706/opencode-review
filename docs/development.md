@@ -40,7 +40,15 @@ vp run bundle:check
 
 ### distとcommitの扱い
 
-`dist/`はAction配布物として追跡する。開発sessionはユーザー判断によりmainリポジトリへcommitしないため、ここでの「生成元との一致」はgit indexではなくsha256で検証する（`vp run build:verify`）。ユーザーの初回push以降はCIの`git diff --exit-code -- dist/`が同じ不変条件をindexに対して強制する。初回commitはユーザー側で行う。
+`dist/`はAction配布物として追跡する。全履歴はローカルにコミット済み（既存コミットは本規約に沿って書き換え済み）で、remoteはまだない。commit前の検証では「生成元との一致」をgit indexではなくsha256で確認する（`vp run build:verify`）。ユーザーの初回push以降はCIの`git diff --exit-code -- dist/`が同じ不変条件をindexに対して強制する。
+
+## commit / PRタイトル規約
+
+commitメッセージとPRタイトルはConventional Commitsとし、commitlintで検証する。
+
+- ローカル: lefthookの`commit-msg` hookが`commitlint --edit {1}`を実行する。`vp install`のpostinstall（`pnpm-workspace.yaml`の`allowBuilds`）がhookを書き、手動再installは`vp env exec pnpm exec lefthook install`。
+- PR: `.github/workflows/pr-lint.yml`の`kevintyj/prlint@v2`がpull_requestでPRタイトルを検証する。checkoutはbase commit（`github.event.pull_request.base.sha`）なので、PR側で`commitlint.config.js`は緩められない。prlintは`@commitlint/config-conventional`をpnpm lock外（npm）で解決する（accepted tradeoff）。
+- 緊急skip: `LEFTHOOK=0 git commit ...`または`git commit --no-verify`（非推奨）。
 
 ## CI
 
@@ -55,7 +63,7 @@ vp run bundle:check
 7. actionlint **v1.7.12**（固定versionをchecksum検証して実行）
 8. `test/smoke/dist-only-smoke.sh`（node:24-alpine + `dist/index.js`のみの起動smoke）
 
-mainリポジトリはまだcommitもpushもされていないため、**このCI自体はユーザーの初回pushまで実行できない**。ローカルでは次の同等コマンドで再現する。
+mainリポジトリはまだpushされていないため、**このCI自体はユーザーの初回pushまで実行できない**。ローカルでは次の同等コマンドで再現する。
 
 ```sh
 vp install --frozen-lockfile
@@ -64,7 +72,7 @@ vp run build
 vp run build:verify
 vp env exec node test/live/two-skill-check.mjs
 vp run bundle:check
-docker run --rm -v "$PWD":/repo -w /repo rhysd/actionlint:1.7.12 -color .github/workflows/ci.yml examples/pr-review.yml
+docker run --rm -v "$PWD":/repo -w /repo rhysd/actionlint:1.7.12 -color .github/workflows/ci.yml .github/workflows/pr-lint.yml examples/pr-review.yml
 bash test/smoke/dist-only-smoke.sh
 ```
 

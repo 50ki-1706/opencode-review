@@ -118,7 +118,7 @@ Phase 2/3 fixtureのcounter.ts系から手書きした6ケースを、program-fi
 
 ## Phase 6の同期（2026-10-03）
 
-配布物と利用文書を追加した。すべてmainリポジトリへのcommitなしで検証している（初回commitはユーザー側）。
+配布物と利用文書を追加した。すべてmainリポジトリへのcommitなしで検証している（初回commitはユーザー側）。補足（2026-10-03）: commitlint + lefthook + prlint導入によりcommit/PRタイトル規約を強制する運用へ移行し、既存のローカルcommit履歴は新規約に沿うよう書き換えた（この「commitなし」前提の記述はsuperseded。初回pushは引き続きユーザー側）。
 
 | 項目 | 実装・検証 |
 | --- | --- |
