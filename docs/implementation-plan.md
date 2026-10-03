@@ -84,4 +84,4 @@ Jev契約のmockとfixtureの検証は`test/jev/`（`node --test test/jev/`）�
 
 全体の受け入れ条件はTODOの`mvp`フェーズに保持する。1 Skill / 1 session、Tool入力によるFinding取得、範囲と根拠の検証、固定HEADへのinline投稿、dry-run、最小依存、障害の区別を満たすことを確認する。
 
-**状態（2026-10-03）：mvp-02〜08は証拠監査で完了（fresh validationすべてexit 0、詳細は`docs/decisions.md`「MVP受け入れ（2026-10-03）」）。mvp-01（GitHub Actions上の完走）のみ保留。** hosted run 37081080875はsecret未設定の`stage:"environment"`でfailureし、`JEV_API_KEY`設定後のrerun待ち（rerun-ready: `gh run rerun 37081080875 -R 50ki-1706/opencode-review-scratch`）。
+**状態（2026-10-03）：mvp-01〜08すべて完了。** mvp-02〜08は証拠監査で完了（fresh validationすべてexit 0、詳細は`docs/decisions.md`「MVP受け入れ（2026-10-03）」）。mvp-01はhosted run 37081080875 attempt 3（scratch repo PR #2、`JEV_API_KEY`設定後）がsuccessで完走（全step success、投稿0件はfreeモデルのanchor caveatによる正常扱い）。残る作業は配布確定（Q09）とanchor verbatim率の改善。

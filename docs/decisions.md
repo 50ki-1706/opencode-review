@@ -157,13 +157,28 @@ run 37081080875（pull_request、job `review`、conclusion=failure）のstep結�
 
 `gh secret list -R 50ki-1706/opencode-review-scratch`は空で、`JEV_API_KEY`が未設定のためReview以降（context確定→producer→Jev→投稿）は未実行。PR #2のコメントは0件、`gh api`で確認。**残る作業**：リポジトリsecret `JEV_API_KEY`を設定し、`gh run rerun 37081080875 -R 50ki-1706/opencode-review-scratch`（またはPR #2へのpushでsynchronize）で完走させる。run結果は成功でも0件（anchor skip）なら正常であり、comment投稿があれば追加のlive証拠になる。
 
+#### hosted E2E完走（attempt 3、2026-10-03）
+
+`gh secret list -R 50ki-1706/opencode-review-scratch`でsecret名`JEV_API_KEY`の存在を確認（2026-10-03T00:49:33Z更新、値は非表示・名前のみ確認）後にrun 37081080875をrerun。**attempt 3 = conclusion success**（job `review` 54s、00:50:43Z→00:51:37Z、head `172e11d9…`不変）:
+
+| step | 結果 |
+| --- | --- |
+| Set up job / actions/checkout@v6 | success |
+| Install OpenCode | success（`added 5 packages in 12s`） |
+| Review | success（`JEV_API_KEY: ***`にmask、所要約30秒・ログtimestampからの概算） |
+| Post checkout / Complete job | success |
+
+PR #2のcommentはreview/issueとも0件（`gh api`で確認）。0件投稿は「Review success + 指摘全skip」の正常経路で（`docs/architecture.md`失敗表）、freeモデルのanchor先頭空白欠落（本節preflight 4/4 `anchor_not_found`）と整合する。PR #1のcomment 3件（4168309537 / 4168309817 / 4168316603）は保持。
+
+学習した事実（hosted）: job全体54s（install 12s含む）と短く、`opencode/space-bunny-free`はrunner上でもprovider keyなしで完走した。本Actionは成功時にstdoutを出さず、結果ファイル（`review-result.json`）と`GITHUB_OUTPUT`はrunner内に留まりuploadされないため、hosted runからcounts / per-finding reasonをAPIで取得できない（attempt 3のReview logはinputs/envのheaderのみ）。`JEV_API_KEY`が空でないことは`readJevToken`通過で確認できるが、全findingがrange skipならJevへ到達しないため、tokenのAPI有効性（401等）はこのrunでは未検証。hostedでのcounts観測は結果ファイルuploadが将来の改善候補。
+
 ## MVP受け入れ（2026-10-03）
 
 Phase 0–6の成果物を監査し、MVP完了条件（TODO `mvp`）を確認した。fresh validation（2026-10-03 JST、`vp`固定toolchain）はすべてexit 0: `vp env current --json`（Node 26.8.2 / pnpm 12.6.0）、`vp run typecheck`、`vp run test`（263 pass / 0 fail）、`vp env exec node --test test/jev/`（14 pass / 0 fail）、`vp run build` / `vp run build:verify`（raw 137271 / gzip 32449、sha256 `1ce9dec5…`一致）、`vp run bundle:check`（baseline比+0.00%）、`vp run test:todo`（7 pass）。追加で`test/live/two-skill-check.mjs`（Skill A/B分離・staging残骸なし）とdist-only smoke（JEV欠如→stage environment、dummy key→stage context）もexit 0。
 
 | MVP | 判定 | 証拠 |
 | --- | --- | --- |
-| mvp-01 | 待ち | hosted run 37081080875（scratch PR #2、head `172e11d9…`）は`{"class":"run_error","stage":"environment","fields":["JEV_API_KEY"]}`でfailure（本節Phase 6同期）。secret設定後にrerunするだけの状態。rerun-ready: `gh secret set JEV_API_KEY -R 50ki-1706/opencode-review-scratch` → `gh run rerun 37081080875 -R 50ki-1706/opencode-review-scratch`。ローカル側の1 Skill / 1 session相当はtwo-skill-check（2 step分離）とPhase 5 live（1 Skill完走）で確認済み |
+| mvp-01 | 合格 | hosted run 37081080875 attempt 3（scratch repo PR #2、head `172e11d9…`）がconclusion success（job 54s、全step success、2026-10-03、証拠レベル=実機(GitHub Actions)）。`JEV_API_KEY` secret設定（名前のみ確認）後のrerun。PR #2のcommentは0件（review/issueとも）だが、freeモデルのanchor先頭空白欠落（Phase 6 preflight 4/4 `anchor_not_found`）による全skipは正常経路で、mvp-01の完了条件（run完走）を満たす。hostedのcounts / skip reasonは結果ファイル未uploadのためAPI取得不可（「hosted E2E完走（attempt 3）」参照） |
 | mvp-02 | 合格 | producerの正式出力は`findings.ndjson`のみ（`src/opencode.ts` L1149 `readFindings`）。promptは「text output is not read by the pipeline」と明示（L251）。`JSON.parse`はNDJSON行（L978）・event JSON（`main.ts` L264）・HTTP応答（github/jev）だけで、AI最終テキストのJSON復元はない。`stdoutTail`はエラー診断のexcerptのみ（L1139）。Phase 2 live smokeで`report_finding`経由のFinding 1件を実測 |
 | mvp-03 | 合格 | Tool即時reject（`test/template.test.ts`）、Core per-record reject（`test/opencode-ndjson.test.ts`、id/skill注入は未知フィールドでreject）、range skip（`test/main.test.ts` L397 `anchor_not_found`→stage skipped・reason・skipped-count）、gate skip（`test/finding-schema.test.ts` の境界表 `below_supported` / `below_comment_worthy` / `range_quality_wrong_location`、`test/main.test.ts` L892）。結果ファイルに`findings[].reason`・`rejected[]`・`counts.skipped`が残る。実モデル（Phase 5 live 2回）は`anchor_not_found`で投稿0件 |
 | mvp-04 | 合格 | `test/publisher.test.ts` L519: 各POST直前にHEAD再確認（GET→POST→GET→POSTの順序）し、単一行line 2・複数行start_line 12/line 14を1件ずつPOST、commentIdを記録。live証拠（2026-10-03再確認）: scratch PR #1のcomment 4168309537（line 2）と4168309817（start_line 12 / line 14）が`gh api`で取得できる。証拠レベル=実測partial（producerのみfake）。hosted分はmvp-01 |
@@ -194,7 +209,7 @@ Phase 0で確認した結果と、残る作業を分けて記録する。
 ## 残存依存
 
 - 認証付きJev較正（Q06）: TypeSafeの`JEV_API_KEY`取得後に、しきい値と良例多数の判定を較正する。匿名`jev-1.13-free`の6例較正は完了（Phase 4の同期）。Phase 5のlive検証でも匿名経路を実測（実Zen、Authorization除去のtest-only harness）。
-- hosted E2E: scratch repo（`50ki-1706/opencode-review-scratch` PR #1）での実inline投稿はPhase 5のlive harnessで完了（2026-10-03、実測 partial: producerのみfake CLI）。Phase 6でPR #2とself-review workflow（`uses: ./`）をdeployし、hosted runnerでcheckout・OpenCode CLI導入・Action起動（input/env検証まで）を実測した。**残存依存：Actions secret `JEV_API_KEY`。** secret設定後にrun 37081080875をrerunすると、context→producer→Jev→投稿のhosted完走を確認できる。
+- hosted E2E: 完了（2026-10-03）。scratch repo（`50ki-1706/opencode-review-scratch` PR #1）での実inline投稿はPhase 5のlive harnessで完了（実測 partial: producerのみfake CLI）。PR #2のself-review（`uses: ./`、run 37081080875）はattempt 1/2が`JEV_API_KEY`未設定でfailure、secret設定後のattempt 3がhosted完走（success、投稿0件はanchor caveatによる正常扱い）。hosted runのcounts / skip reasonは結果ファイルがuploadされないため取得できない（改善候補）。
 - runner実環境検証（Q03/Q05/D25）: Phase 6でGitHub-hosted ubuntu・同一リポジトリPRのworkflowを通し、checkout（`head.sha`+`fetch-depth:0`）と`npm install -g @opencode/cli@2.0.22`の成功を実測。実モデル（`opencode/space-bunny-free`）はPhase 5 live 2回とPhase 6 anchor live 2回のいずれもanchorの先頭空白欠落で`anchor_not_found`となり、verbatim率の改善余地が残る（promptは改善済み、0件runも正常扱い）。
 
 ## 判断を更新するとき

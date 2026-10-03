@@ -2,7 +2,7 @@
 
 OpenCodeがリポジトリ固有のSkillに基づいてPRをレビューし、自前のCoreが指摘内容とコメント範囲を検証して、GitHubへinline review commentを投稿するGitHub Action。
 
-**状態（2026-10-03）：Phase 0–6とMVP受け入れ監査まで実装・検証済み（mvp-02〜08は監査完了、詳細は`docs/decisions.md`「MVP受け入れ（2026-10-03）」）。hosted E2E（scratch repo PR #2、run 37081080875）はActions secret `JEV_API_KEY`の設定待ちで、設定後のrerunで完走確認する。** 公開先・バージョン戦略・ライセンスは配布作業時に確定する（未決事項Q09）。`examples/pr-review.yml`の`uses:`は意図的にプレースホルダのままで、実在する配布Actionを示していない。検証結果は`docs/decisions.md`と`.opencode/context/implementation-todo.json`に記録する。
+**状態（2026-10-03）：Phase 0–6とMVP受け入れ（mvp-01〜08）まで完了（詳細は`docs/decisions.md`「MVP受け入れ（2026-10-03）」）。hosted E2E（scratch repo PR #2、run 37081080875 attempt 3）はsuccessで完走し、投稿0件は無償モデルのanchor caveatによる正常扱い。** 公開先・バージョン戦略・ライセンスは配布作業時に確定する（未決事項Q09）。`examples/pr-review.yml`の`uses:`は意図的にプレースホルダのままで、実在する配布Actionを示していない。検証結果は`docs/decisions.md`と`.opencode/context/implementation-todo.json`に記録する。
 
 ## 基本方針
 

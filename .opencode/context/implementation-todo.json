@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "revision": 69,
-  "updatedAt": "2026-10-03T00:38:17.817Z",
+  "revision": 70,
+  "updatedAt": "2026-10-03T00:53:15.742Z",
   "project": "opencode-review",
   "references": [
     "docs/overview.md",
@@ -455,8 +455,8 @@
         {
           "id": "mvp-01",
           "title": "GitHub Actions上で1 Skill / 1 sessionのレビューが完走する。",
-          "status": "pending",
-          "note": "未完了(2026-10-03)。hosted run 37081080875(scratch PR#2, head 172e11d9…)はsecret未設定でstage=environment(fields:JEV_API_KEY) fail。gh secret listをJST 09:21/09:26/09:32/09:38に確認したがJEV_API_KEY未設定のまま(名前のみ確認、値は見ていない)。rerun-ready: `gh secret set JEV_API_KEY -R 50ki-1706/opencode-review-scratch` → `gh run rerun 37081080875 -R 50ki-1706/opencode-review-scratch` → `gh run watch 37081080875 --exit-status`。判定: successなら完走(全finding skipで投稿0件でもmvp-01完了)。ローカル側のSkill/session分離はtwo-skill-check exit0。"
+          "status": "completed",
+          "note": "hosted E2E完走（2026-10-03、実機(GitHub Actions)）。run 37081080875 attempt 3 = conclusion success、job review 54s（00:50:43Z→00:51:37Z、Install OpenCode 12s、Review約33s）、全step success。scratch PR #2 head 172e11d9…不変、JEV_API_KEY secret設定（gh secret listで名前のみ確認、2026-10-03T00:49:33Z）後のrerun。PR #2のcommentはreview/issueとも0件だが、freeモデルのanchor先頭空白欠落（Phase 6 preflight 4/4 anchor_not_found）による指摘全skipの0件投稿は正常扱い（architecture失敗表）。PR #1のcomment 3件は保持。hostedでは成功時stdoutなし・result file/GITHUB_OUTPUTはrunner内で未uploadのため、counts/per-finding reasonのAPI取得は不可（Review logはinputs/env headerのみ）。JEV_API_KEYの存在はreadJevToken通過で確認（全findingがrange skipの場合はJev未到達のためtoken有効性は未検証）。これでmvp 8/8完了。"
         },
         {
           "id": "mvp-02",
