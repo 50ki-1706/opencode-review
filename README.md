@@ -2,7 +2,7 @@
 
 OpenCodeがリポジトリ固有のSkillに基づいてPRをレビューし、自前のCoreが指摘内容とコメント範囲を検証して、GitHubへinline review commentを投稿するGitHub Action。
 
-**状態（2026-10-03）：Phase 0–6とMVP受け入れ（mvp-01〜08、8/8）まで実装・検証完了（TODO revision 70）。ローカルgit履歴7コミット、初回push前のためCI未実行。公開先・tag・ライセンスは未定（Q09）で、配布は別途依頼された段階で行う。** 検証の記録は[設計判断](docs/decisions.md)と`.opencode/context/implementation-todo.json`が正本。
+**状態（2026-10-03）：Phase 0–6とMVP受け入れ（mvp-01〜08、8/8）まで実装・検証完了（TODO revision 70）。git履歴はローカルmainにコミット済み、初回push前のためCI未実行。公開先・tag・ライセンスは未定（Q09）で、配布は別途依頼された段階で行う。** 検証の記録は[設計判断](docs/decisions.md)と`.opencode/context/implementation-todo.json`が正本。
 
 ## いま動くもの
 
