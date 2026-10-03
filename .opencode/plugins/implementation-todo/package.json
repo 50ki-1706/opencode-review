@@ -1,7 +1,0 @@
-{
-  "name": "opencode-review-implementation-todo",
-  "version": "0.1.0",
-  "private": true,
-  "type": "module",
-  "exports": "./index.js"
-}

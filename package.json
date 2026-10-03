@@ -6,7 +6,6 @@
   "scripts": {
     "typecheck": "tsc --noEmit",
     "test": "node --test --test-reporter=spec test/",
-    "test:todo": "node --test test/implementation-todo.test.js",
     "build": "node scripts/build.mjs",
     "build:verify": "node scripts/check-bundle.mjs determinism",
     "bundle:check": "node scripts/check-bundle.mjs size"

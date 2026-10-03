@@ -6,7 +6,5 @@ coverage/
 .env.*
 !.env.example
 *.log
-.opencode/context/*.lock
-.opencode/context/*.tmp
 
 # dist/はGitHub Actionの配布物として、実装後に追跡する。

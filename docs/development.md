@@ -29,7 +29,6 @@ vp env exec node --test test/jev/
 vp run build
 vp run build:verify
 vp run bundle:check
-vp run test:todo
 ```
 
 - `vp run test`は`test/`配下の`*.test.ts` / `*.test.js` / `*.test.mjs`をNode標準runnerで実行する。`test/live/*`（`.mjs`と`live-smoke.ts`）、`test/helpers/*`、`test/smoke/*`と`test/jev/mock-server.mjs`はmanual seamまたはfixtureとして実行対象外。
