@@ -1,0 +1,8 @@
+assert_lefthook_installed: true
+
+commit-msg:
+  commands:
+    commitlint:
+      env:
+        PATH: "./node_modules/.bin:$PATH"
+      run: commitlint --edit "{1}"

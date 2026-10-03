@@ -1,0 +1,28 @@
+# PR title lint. Under squash merging the PR title becomes the commit message,
+# so it is checked with the same commitlint config as the local commit-msg hook.
+# The workflow checks out the PR base commit so a PR cannot weaken
+# commitlint.config.js to pass itself (trusted-base config). prlint resolves
+# @commitlint/config-conventional at runtime via npm, outside pnpm-lock.yaml:
+# accepted tradeoff for a dev-only check (the local hook keeps lockfile parity).
+name: PR lint
+
+on:
+  pull_request:
+    types: [opened, edited, reopened, synchronize]
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          # Lint against the base commit's config, not the PR's.
+          ref: ${{ github.event.pull_request.base.sha }}
+          persist-credentials: false
+
+      - uses: kevintyj/prlint@v2
+        with:
+          download-dependencies: node
+          body: false
