@@ -1,0 +1,50 @@
+name: opencode-review
+description: Review a pull request with one repository Skill and publish only findings validated by the Core and Jev.
+inputs:
+  skill:
+    description: Skill name (not a path) resolved under .opencode/skills/<name>/SKILL.md.
+    required: true
+  model:
+    description: OpenCode model in provider/model form, optionally with a #variant suffix.
+    required: true
+  dry-run:
+    description: '"true" runs the full validation pipeline and prints payloads without POSTing comments. Jev and GitHub metadata reads still happen.'
+    required: false
+    default: "false"
+  github-token:
+    description: Token for GitHub metadata reads and inline comment publishing. Required in practice; dry-run still needs it for metadata reads and it is never passed to the OpenCode child process.
+    required: false
+  jev-model:
+    description: Jev (TypeSafe System One) model used by the publish gate.
+    required: false
+    default: "jev-1.13-free"
+  supported-threshold:
+    description: Minimum supported score (0-1, inclusive) for the publish gate.
+    required: false
+    default: "0.7"
+  comment-worthy-threshold:
+    description: Minimum commentWorthy score (0-1, inclusive) for the publish gate.
+    required: false
+    default: "0.6"
+  timeout-seconds:
+    description: OpenCode execution timeout in seconds (1-3600).
+    required: false
+    default: "600"
+  max-findings:
+    description: Maximum accepted finding records per invocation (1-1000).
+    required: false
+    default: "100"
+outputs:
+  accepted-count:
+    description: Findings accepted into the Core pipeline.
+  publishable-count:
+    description: Findings that passed the publish gate.
+  published-count:
+    description: Inline comments created (0 for dry-run).
+  skipped-count:
+    description: Findings skipped with a recorded reason.
+  result-path:
+    description: Path of the result file inside the runner workspace.
+runs:
+  using: node24
+  main: dist/index.js
