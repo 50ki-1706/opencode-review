@@ -1,0 +1,21 @@
+{
+  "schemaVersion": 1,
+  "policy": {
+    "maxGrowthPercent": 15,
+    "note": "scripts/check-bundle.mjs size compares dist/index.js raw and gzip against baseline. Growth over the limit fails CI so that a dependency or code change has to be acknowledged: record the reason in docs/decisions.md Q08 and update baseline + history here. Phase values are the esbuild 0.28.2 measurements documented in Q08."
+  },
+  "baseline": {
+    "phase": "phase-6",
+    "recordedAt": "2026-10-03",
+    "raw": 137271,
+    "gzip": 32449
+  },
+  "history": [
+    { "phase": "phase-1", "recordedAt": "2026-10-03", "raw": 24999, "gzip": 6640 },
+    { "phase": "phase-2", "recordedAt": "2026-10-03", "raw": 79887, "gzip": 19219 },
+    { "phase": "phase-3", "recordedAt": "2026-10-03", "raw": 102066, "gzip": 24692 },
+    { "phase": "phase-4", "recordedAt": "2026-10-03", "raw": 126974, "gzip": 30314 },
+    { "phase": "phase-5", "recordedAt": "2026-10-03", "raw": 136799, "gzip": 32300 },
+    { "phase": "phase-6", "recordedAt": "2026-10-03", "raw": 137271, "gzip": 32449 }
+  ]
+}

@@ -1,0 +1,290 @@
+{
+  "inputs": {
+    "node_modules/.pnpm/valibot@1.5.0_typescript@7.0.2/node_modules/valibot/dist/index.mjs": {
+      "bytes": 206411,
+      "imports": [],
+      "format": "esm"
+    },
+    "src/finding.ts": {
+      "bytes": 17464,
+      "imports": [
+        {
+          "path": "node_modules/.pnpm/valibot@1.5.0_typescript@7.0.2/node_modules/valibot/dist/index.mjs",
+          "kind": "import-statement",
+          "original": "valibot"
+        }
+      ],
+      "format": "esm"
+    },
+    "src/github.ts": {
+      "bytes": 11852,
+      "imports": [
+        {
+          "path": "node_modules/.pnpm/valibot@1.5.0_typescript@7.0.2/node_modules/valibot/dist/index.mjs",
+          "kind": "import-statement",
+          "original": "valibot"
+        }
+      ],
+      "format": "esm"
+    },
+    "src/jev.ts": {
+      "bytes": 13263,
+      "imports": [
+        {
+          "path": "node_modules/.pnpm/valibot@1.5.0_typescript@7.0.2/node_modules/valibot/dist/index.mjs",
+          "kind": "import-statement",
+          "original": "valibot"
+        },
+        {
+          "path": "src/finding.ts",
+          "kind": "import-statement",
+          "original": "./finding.ts"
+        }
+      ],
+      "format": "esm"
+    },
+    "templates/report-finding.plugin.ts": {
+      "bytes": 5444,
+      "imports": [],
+      "format": "esm"
+    },
+    "src/templates.ts": {
+      "bytes": 762,
+      "imports": [
+        {
+          "path": "node:fs",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "templates/report-finding.plugin.ts",
+          "kind": "import-statement",
+          "original": "../templates/report-finding.plugin.ts"
+        }
+      ],
+      "format": "esm"
+    },
+    "src/opencode.ts": {
+      "bytes": 42658,
+      "imports": [
+        {
+          "path": "node:child_process",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "node:crypto",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "node:fs/promises",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "node:path",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "node_modules/.pnpm/valibot@1.5.0_typescript@7.0.2/node_modules/valibot/dist/index.mjs",
+          "kind": "import-statement",
+          "original": "valibot"
+        },
+        {
+          "path": "src/finding.ts",
+          "kind": "import-statement",
+          "original": "./finding.ts"
+        },
+        {
+          "path": "src/github.ts",
+          "kind": "import-statement",
+          "original": "./github.ts"
+        },
+        {
+          "path": "src/templates.ts",
+          "kind": "import-statement",
+          "original": "./templates.ts"
+        }
+      ],
+      "format": "esm"
+    },
+    "src/range.ts": {
+      "bytes": 34753,
+      "imports": [
+        {
+          "path": "node:child_process",
+          "kind": "import-statement",
+          "external": true
+        }
+      ],
+      "format": "esm"
+    },
+    "src/main.ts": {
+      "bytes": 42281,
+      "imports": [
+        {
+          "path": "node:fs/promises",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "node:path",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "node:url",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "node_modules/.pnpm/valibot@1.5.0_typescript@7.0.2/node_modules/valibot/dist/index.mjs",
+          "kind": "import-statement",
+          "original": "valibot"
+        },
+        {
+          "path": "src/finding.ts",
+          "kind": "import-statement",
+          "original": "./finding.ts"
+        },
+        {
+          "path": "src/github.ts",
+          "kind": "import-statement",
+          "original": "./github.ts"
+        },
+        {
+          "path": "src/jev.ts",
+          "kind": "import-statement",
+          "original": "./jev.ts"
+        },
+        {
+          "path": "src/opencode.ts",
+          "kind": "import-statement",
+          "original": "./opencode.ts"
+        },
+        {
+          "path": "src/range.ts",
+          "kind": "import-statement",
+          "original": "./range.ts"
+        },
+        {
+          "path": "src/templates.ts",
+          "kind": "import-statement",
+          "original": "./templates.ts"
+        }
+      ],
+      "format": "esm"
+    }
+  },
+  "outputs": {
+    "dist/index.js": {
+      "imports": [
+        {
+          "path": "node:fs/promises",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "node:path",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "node:url",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "node:child_process",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "node:crypto",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "node:fs/promises",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "node:path",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "node:fs",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "node:child_process",
+          "kind": "import-statement",
+          "external": true
+        }
+      ],
+      "exports": [
+        "ActionInputError",
+        "EnvironmentError",
+        "EventError",
+        "RUN_VERSION",
+        "ZERO_COUNTS",
+        "appendOutputs",
+        "buildReviewContext",
+        "buildRunArtifacts",
+        "dedupePublishables",
+        "defaultPipelineDependencies",
+        "duplicateFindingMessage",
+        "formatDryRunPlan",
+        "isSameRepository",
+        "main",
+        "parsePullRequestEvent",
+        "publishFindings",
+        "pullRequestEventSchema",
+        "readActionInputs",
+        "readJevToken",
+        "readRunnerEnvironment",
+        "reportFindingTemplate",
+        "run",
+        "stageForFailure",
+        "validateResolvedFindings",
+        "writeRunArtifacts"
+      ],
+      "entryPoint": "src/main.ts",
+      "inputs": {
+        "src/main.ts": {
+          "bytesInOutput": 28116
+        },
+        "node_modules/.pnpm/valibot@1.5.0_typescript@7.0.2/node_modules/valibot/dist/index.mjs": {
+          "bytesInOutput": 23170
+        },
+        "src/finding.ts": {
+          "bytesInOutput": 9941
+        },
+        "src/github.ts": {
+          "bytesInOutput": 7070
+        },
+        "src/jev.ts": {
+          "bytesInOutput": 7292
+        },
+        "src/opencode.ts": {
+          "bytesInOutput": 31748
+        },
+        "src/templates.ts": {
+          "bytesInOutput": 254
+        },
+        "templates/report-finding.plugin.ts": {
+          "bytesInOutput": 5610
+        },
+        "src/range.ts": {
+          "bytesInOutput": 23245
+        }
+      },
+      "bytes": 137271
+    }
+  }
+}
