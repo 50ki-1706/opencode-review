@@ -35,10 +35,11 @@
 | D20 | 確定（2026-10-03） | JevはTypeSafe AIのSystem Oneと確認。接続はOpenCode Zen gateway `https://opencode.ai/zen/v1/systemone`、初期modelは`jev-1.13-free` | 公式docsと実サービス（匿名200・3判断返却）で確認。認証付き較正は`JEV_API_KEY`依存（D24） |
 | D21 | 確定（2026-10-03） | 分離レシピはtemp HOME + `$HOME/.config/opencode`の管理物のみ + `XDG_CONFIG_HOME` + `OPENCODE_DISABLE_PROJECT_CONFIG=1` + cwd=PWD + `.git`なしworkspace | 2.0.22実測。探索はPWD基準、`/etc/opencode`は読まれない（Docker実測）、PR由来config / tool / plugin / `.env`は実効なし |
 | D22 | 採用 | 開発環境はNode 26.8.2・pnpm 12.6.0をvpで固定。GitHub配布Actionは対応済みのnode24とし、互換性を検証する |
-| D23 | 採用 | AGENTS.mdは英語の最小限のコーディング規約に限定。実装TODOは文書と分けたplugin用コンテキストを正本とする |
+| D23 | 採用（2026-10-03 廃止:下記D27に置換） | AGENTS.mdは英語の最小限のコーディング規約に限定。実装TODOは文書と分けたplugin用コンテキストを正本とする |
 | D24 | 採用（2026-10-03） | Jev認証は`JEV_API_KEY`（TypeSafe）を必須とする。子OpenCode環境への値衝突は無条件run error。匿名free経路に本番依存しない | 匿名`jev-1.13-free`の200はローカル実測できたが、期間限定・保障外。`JEV_API_KEY`欠如時は即run errorとし、無料匿名の成功に依存しない |
 | D25 | 採用（2026-10-03） | 対応環境はGitHub-hosted ubuntu runnerと同一リポジトリPRのみ | fork PRは標準token・secretsの制限対象で、`pull_request_target`は採用しない。runner実環境の検証はPhase 6 |
 | D26 | 実測・採用（2026-10-03） | Phase 2のproducer境界を確定：GitHub metadataは`X-GitHub-Api-Version: 2026-03-10`・redirect手動・3xxエラー。workspace除外は`.opencode/`・`opencode.json`・`opencode.jsonc`・全`.env*`（`AGENTS.md`は`OPENCODE_DISABLE_PROJECT_CONFIG=1`で探索無効のため保持）。管理configは`opencode.json`とagent frontmatterの両層に同一のv2 permissions配列を置き、plugin canaryのmarker出現を成功条件にする（config silently dropの検出）。`id`はCoreの`crypto.randomUUID()`。Tool側`max-findings`は受付時拒否、Core側は同じ上限をassert（defense-in-depth）。blank-only拒否と長さ上限（path 512 / anchor 5000 / title 200 / body 20000）をToolとCoreの両層で行う。debug時のみ`REVIEW_KEEP_ARTIFACTS=1`でstagingを保持 | 2.0.22実測：agent frontmatter permissionsは動作済み、`opencode.json`のpermissionsは公式v2 docs。canaryがないと管理plugin欠落をexit 0のまま見逃す。`AGENTS.md`はD21の分離で実効がなく、削除対象を実runtime設定に限定する。匿名`opencode/space-bunny-free`のlive smoke（2026-10-03）でcanary出現・exit 0・report_finding 1件・cleanupを実測 |
+| D27 | 採用（2026-10-03） | 開発セッションの進捗トラッキング（TODO plugin / context JSON / test:todo）はコードベースから削除。進捗・検証記録の正本は`docs/decisions.md`の日付付き記録とgit履歴 | 配布物・レビューコアと無関係な開発専用機構であり、履歴改変の余地なく検証レベルが文書側に既にある |
 
 公式GitHub Actionを呼ぶことと、公式runtimeを使うことは区別する。Node Action内から別Actionの`uses:`をそのまま実行する構成にはせず、起動方式の判断を`opencode.ts`に閉じ込める。
 

@@ -103,7 +103,7 @@ dist/
 
 Toolはv2 pluginのテキスト（素の`export default { id, setup }`、importなし）としてbundleへ含め、実行時に配置する。esbuildではtext loaderとして扱い、文字列中の名前をAction依存として解決しない。Actionの外部実行時依存はValibotのみとし、metafileで不要依存が含まれないことを確認する。[v2 Plugins](https://opencode.ai/v2/docs/build/plugins)、[Valibot Introduction](https://valibot.dev/guides/introduction/)
 
-開発環境は`vp`でNode 26.8.2・pnpm 12.6.0を固定する。配布Actionの`using: node24`とは区別し、build targetと利用APIをNode 24へ合わせる。開発用TODO pluginはActionのbundleに含めない。
+開発環境は`vp`でNode 26.8.2・pnpm 12.6.0を固定する。配布Actionの`using: node24`とは区別し、build targetと利用APIをNode 24へ合わせる。開発用ツール・機構はActionのbundleに含めない。
 
 ## 型と値の所有者
 

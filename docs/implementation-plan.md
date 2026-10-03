@@ -1,6 +1,6 @@
 # 実装計画
 
-Action本体はPhase 6（Action配布準備）とMVP受け入れ監査まで実装・検証済み（2026-10-03）。以下はフェーズ・成果物・完了条件の仕様。具体的な作業TODOと進捗は`.opencode/context/implementation-todo.json`を正本として管理する。
+Action本体はPhase 6（Action配布準備）とMVP受け入れ監査まで実装・検証済み（2026-10-03）。以下はフェーズ・成果物・完了条件の仕様。進捗管理機構は2026-10-03に削除済み（decisions.md D27）で、進捗・完了記録の正本は`docs/decisions.md`とgit履歴。
 
 ```mermaid
 flowchart LR
@@ -82,6 +82,6 @@ Jev契約のmockとfixtureの検証は`test/jev/`（`node --test test/jev/`）�
 
 ## MVP全体の完了条件
 
-全体の受け入れ条件はTODOの`mvp`フェーズに保持する。1 Skill / 1 session、Tool入力によるFinding取得、範囲と根拠の検証、固定HEADへのinline投稿、dry-run、最小依存、障害の区別を満たすことを確認する。
+全体の受け入れ条件は本ドキュメントのMVP節（および`docs/decisions.md`の受け入れ記録）に保持する。1 Skill / 1 session、Tool入力によるFinding取得、範囲と根拠の検証、固定HEADへのinline投稿、dry-run、最小依存、障害の区別を満たすことを確認する。
 
 **状態（2026-10-03）：mvp-01〜08すべて完了。** mvp-02〜08は証拠監査で完了（fresh validationすべてexit 0、詳細は`docs/decisions.md`「MVP受け入れ（2026-10-03）」）。mvp-01はhosted run 37081080875 attempt 3（scratch repo PR #2、`JEV_API_KEY`設定後）がsuccessで完走（全step success、投稿0件はfreeモデルのanchor caveatによる正常扱い）。残る作業は配布確定（Q09）とanchor verbatim率の改善。

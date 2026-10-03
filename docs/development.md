@@ -90,6 +90,6 @@ bash test/smoke/dist-only-smoke.sh
 
 ## 開発資料と進捗
 
-概要は`overview.md`、型・処理順は`architecture.md`、フェーズと完了条件は`implementation-plan.md`、採用判断は`decisions.md`、配布/利用の説明は`README.md`で管理する。実装TODOと進捗の正本は`.opencode/context/implementation-todo.json`に分離する。
+概要は`overview.md`、型・処理順は`architecture.md`、フェーズと完了条件は`implementation-plan.md`、採用判断は`decisions.md`、配布/利用の説明は`README.md`で管理する。進捗記録の正本は`docs/decisions.md`とgit履歴（開発専用TODO機構は2026-10-03削除、D27）。
 
 通常テストはfixtureを使う。`.env`や資格情報は追跡しない。bundleサイズの比較基準は`docs/bundle-baseline.json`（履歴は`docs/decisions.md` Q08）。

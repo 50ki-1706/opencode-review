@@ -2,20 +2,20 @@
 
 OpenCodeがリポジトリ固有のSkillに基づいてPRをレビューし、自前のCoreが指摘内容とコメント範囲を検証して、GitHubへinline review commentを投稿するGitHub Action。
 
-**状態（2026-10-03）：Phase 0–6とMVP受け入れ（mvp-01〜08、8/8）まで実装・検証完了（TODO revision 70）。git履歴はローカルmainにコミット済み、初回push前のためCI未実行。公開先・tag・ライセンスは未定（Q09）で、配布は別途依頼された段階で行う。** 検証の記録は[設計判断](docs/decisions.md)と`.opencode/context/implementation-todo.json`が正本。
+**状態（2026-10-03）：Phase 0–6とMVP受け入れ（mvp-01〜08、8/8）まで実装・検証完了。git履歴はローカルmainにコミット済み、初回push前のためCI未実行。公開先・tag・ライセンスは未定（Q09）で、配布は別途依頼された段階で行う。** 検証の記録は[設計判断](docs/decisions.md)が正本。
 
 ## いま動くもの
 
 - **Action本体**：`src/`の6モジュール（`finding` / `github` / `jev` / `main` / `opencode` / `range`）とv2 pluginテキストテンプレート（`templates/report-finding.plugin.ts`、`src/templates.ts`経由）。配布物は単一`dist/index.js`で、runtime依存はvalibot 1.5.0のみ（raw 137,271 B / gzip 32,449 B、bundleサイズゲート +0.00%）。
 - **パイプライン**：OpenCode v2 producer（`report_finding` → NDJSON）→ Valibot検証 → Range Resolver → Jev（Zen `jev-1.13-free`）→ Publish Gate → inline投稿 / dry-run（POST 0回）。
-- **検証状態**：`vp run typecheck` exit 0、unit/統合263件 + Jev契約14件 green、build再現性（2回buildのsha256一致）、Node 24 dist-only smoke、hosted E2E run 37081080875 attempt 3 成功（private scratch repo）。実inline投稿の実績はscratch PR #1のcomment 4168309537（単一行）・4168309817（複数行）。
+- **検証状態**：`vp run typecheck` exit 0、unit/統合256件 + Jev契約14件 green、build再現性（2回buildのsha256一致）、Node 24 dist-only smoke、hosted E2E run 37081080875 attempt 3 成功（private scratch repo）。実inline投稿の実績はscratch PR #1のcomment 4168309537（単一行）・4168309817（複数行）。
 
 ## 到達レベル（証拠）
 
 | レベル | 到達した内容 |
 | --- | --- |
 | 公式docs | `@opencode/cli@2.0.22`のv2 contract、Zen gateway、GitHub API version等の仕様確認 |
-| fixture | 263 unit/統合 + 14 Jev契約。Tool入力・NDJSON・Range Resolver・Jev gate・publisherの境界 |
+| fixture | 256 unit/統合 + 14 Jev契約。Tool入力・NDJSON・Range Resolver・Jev gate・publisherの境界 |
 | ローカル実測（実モデル・匿名free） | `opencode/space-bunny-free`でcanary出現・`report_finding`取得・cleanupを実測。anchor先頭空白欠落で4/4 skip（既知の制約） |
 | 実サービス（Jev Zen 匿名free） | `jev-1.13-free`で6例を校正。正例2/2合格・誤指摘2/2不合格、`too_wide`は検出限界 |
 | 実機（GitHub Actions） | hosted E2E run 37081080875 attempt 3が成功（checkout・CLI導入・Review step完走。投稿0件は正常扱い） |
@@ -47,7 +47,7 @@ OpenCodeがリポジトリ固有のSkillに基づいてPRをレビューし、�
 
 ```sh
 vp run typecheck                    # strict TypeScript
-vp run test                         # unit/統合 263件（Node標準runner）
+vp run test                         # unit/統合 256件（Node標準runner）
 vp env exec node --test test/jev/   # Jev契約 14件
 vp run build                        # dist/index.js + dist/metafile.json
 vp run build:verify                 # 2回buildのsha256一致 + checked-in distとの一致
