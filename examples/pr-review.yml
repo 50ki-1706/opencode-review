@@ -1,0 +1,69 @@
+# Sample workflow for opencode-review.
+#
+# The Action is not published yet (decisions.md Q09), so the `uses:` line below
+# keeps a placeholder. Replace OWNER and the 40-character SHA with the real
+# repository and a pinned release commit before use. Pin a commit SHA rather
+# than a moving tag, then update it deliberately when a new release is reviewed.
+#
+# One invocation = one Skill = one OpenCode session. The two review steps below
+# are independent: each creates its own staging directory, OpenCode session,
+# Jev validation and result file.
+name: Skill review
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+
+permissions:
+  contents: read
+  pull-requests: write
+
+concurrency:
+  group: skill-review-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  review:
+    # Same-repository, non-draft PRs only. Fork PRs cannot read secrets and get
+    # a read-only token; see README for why this Action requires both.
+    if: >-
+      !github.event.pull_request.draft &&
+      github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          # Review the event's PR HEAD, not the merge ref, and keep enough
+          # history for the merge-base calculation.
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Install OpenCode
+        # pinned runtime. npm runs the platform postinstall by default; pnpm
+        # would need an explicit build-script approval for the same install.
+        run: npm install -g @opencode/cli@2.0.22
+
+      - name: Security review
+        uses: OWNER/opencode-review@0000000000000000000000000000000000000000 # TODO: replace with the pinned release SHA
+        with:
+          skill: security-review
+          # Free-model policy: pick an available opencode/... free model.
+          # No automatic paid fallback (docs/overview.md).
+          model: opencode/space-bunny-free
+          dry-run: 'false'
+          github-token: ${{ github.token }}
+        env:
+          # Required. JEV_API_KEY is read by the Action process only and is
+          # never passed to the OpenCode child process.
+          JEV_API_KEY: ${{ secrets.JEV_API_KEY }}
+
+      - name: Bug review
+        uses: OWNER/opencode-review@0000000000000000000000000000000000000000 # TODO: replace with the pinned release SHA
+        with:
+          skill: bug-review
+          model: opencode/space-bunny-free
+          dry-run: 'false'
+          github-token: ${{ github.token }}
+        env:
+          JEV_API_KEY: ${{ secrets.JEV_API_KEY }}

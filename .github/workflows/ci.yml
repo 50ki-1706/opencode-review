@@ -1,0 +1,77 @@
+# CI for the opencode-review repository itself (phase-6-03/04/05/06). This is
+# not the consumer workflow: it gates the distributable bundle. The repository
+# has no developer-side commits (user decision), so this workflow starts running
+# from the user's first push. Every step is mirrored by the local commands in
+# docs/development.md.
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          # Full history keeps the dist mismatch check robust after future merges.
+          fetch-depth: 0
+
+      - name: Install Vite+
+        run: |
+          curl -fsSL https://vite.plus | bash
+          # The installer writes vp and its shims below $HOME; discover the
+          # binary instead of pinning an install path that can vary.
+          vp_bin="$(command -v vp || true)"
+          if [ -z "$vp_bin" ]; then
+            vp_bin="$(find "$HOME" -maxdepth 5 -type f -name vp -perm -u+x 2>/dev/null | head -n 1)"
+          fi
+          test -n "$vp_bin" || { echo "vp was not found after installation"; exit 1; }
+          echo "PATH=$(dirname "$vp_bin"):$PATH" >> "$GITHUB_ENV"
+          "$vp_bin" --version
+
+      - name: Install dependencies
+        run: vp install --frozen-lockfile
+
+      - name: Typecheck
+        run: vp run typecheck
+
+      - name: Unit / fixture tests
+        run: vp run test
+
+      - name: Jev contract tests
+        run: vp env exec node --test test/jev/
+
+      - name: Build dist
+        run: vp run build
+
+      - name: Checked-in dist matches a fresh build
+        run: git diff --exit-code -- dist/
+
+      - name: Rebuild determinism + dist/source match
+        run: vp run build:verify
+
+      - name: Two-skill separation (dist bundle)
+        run: vp env exec node test/live/two-skill-check.mjs
+
+      - name: Bundle size budget
+        run: vp run bundle:check
+
+      - name: Actionlint (pinned)
+        run: |
+          actionlint_version=1.7.12
+          cd "$RUNNER_TEMP"
+          curl -fsSLO "https://github.com/rhysd/actionlint/releases/download/v${actionlint_version}/actionlint_${actionlint_version}_linux_amd64.tar.gz"
+          curl -fsSLO "https://github.com/rhysd/actionlint/releases/download/v${actionlint_version}/actionlint_${actionlint_version}_checksums.txt"
+          grep "actionlint_${actionlint_version}_linux_amd64.tar.gz" "actionlint_${actionlint_version}_checksums.txt" | sha256sum -c -
+          tar -xzf "actionlint_${actionlint_version}_linux_amd64.tar.gz"
+          ./actionlint -color "$GITHUB_WORKSPACE/.github/workflows/"*.yml "$GITHUB_WORKSPACE/examples/"*.yml
+
+      - name: Dist-only Node 24 smoke
+        run: bash test/smoke/dist-only-smoke.sh
