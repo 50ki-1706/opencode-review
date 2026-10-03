@@ -1,0 +1,8 @@
+diff --git a/src/link.ts b/src/link.ts
+new file mode 120000
+index 0000000..1c6734d
+--- /dev/null
++++ b/src/link.ts
+@@ -0,0 +1 @@
++target.ts
+\ No newline at end of file

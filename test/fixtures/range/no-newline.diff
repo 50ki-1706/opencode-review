@@ -1,0 +1,10 @@
+diff --git a/src/tail.ts b/src/tail.ts
+index 0dfd835..ec4bbc4 100644
+--- a/src/tail.ts
++++ b/src/tail.ts
+@@ -1,2 +1,2 @@
+ export const a = 1;
+-export const b = 2;
+\ No newline at end of file
++export const b = 3;
+\ No newline at end of file

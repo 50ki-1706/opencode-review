@@ -1,0 +1,38 @@
+{
+  "origin": "https://opencode.ai/zen/v1/systemone",
+  "captured_at": "2026-10-02T15:48:11Z",
+  "request": {
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "model": "jev-1.13-free",
+      "questions": {
+        "supported": {
+          "type": "noul",
+          "instructions": "q1"
+        }
+      }
+    },
+    "note": "Body intentionally omits state. Authorization header intentionally invalid (fake value, not a secret)."
+  },
+  "response": {
+    "status": 401,
+    "content_type": "text/plain;charset=UTF-8",
+    "body": {
+      "type": "error",
+      "error": {
+        "type": "AuthError",
+        "message": "Invalid API key."
+      }
+    }
+  },
+  "headers_of_note": [
+    "server: cloudflare",
+    "cf-placement: remote-ORD",
+    "no WWW-Authenticate header",
+    "no Retry-After header"
+  ],
+  "fact": "Observed live on 2026-10-02. Content-Type was text/plain although the body is JSON.",
+  "inference": "This is the gateway/Cloudflare error envelope, not necessarily the TypeSafe API envelope."
+}

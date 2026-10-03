@@ -1,0 +1,74 @@
+{
+  "origin": "https://opencode.ai/zen/v1/systemone",
+  "captured_at": "2026-10-02T15:48:35Z",
+  "auth": "none: no Authorization header was sent, and the endpoint returned 200 for model jev-1.13-free",
+  "latency_ms": 648,
+  "request_headers": {
+    "Content-Type": "application/json"
+  },
+  "request": {
+    "model": "jev-1.13-free",
+    "state": "FILE: src/counter.ts\n--- comment range (lines 2-2) ---\n1| export function increment(n: number) {\n2|   return n + 1;\n3| }\n--- finding ---\n[medium] Off-by-one in increment\nincrement(0) returns 1, but callers expect 0; the change breaks zero-based counters. Evidence: line 2 returns n + 1.",
+    "questions": {
+      "supported": {
+        "type": "noul",
+        "instructions": "Does the presented HEAD code and evidence support the claim in the finding?"
+      },
+      "commentWorthy": {
+        "type": "noul",
+        "instructions": "Does the finding describe a concrete harm worth an inline review comment?"
+      },
+      "rangeQuality": {
+        "type": "choice",
+        "instructions": "Does the presented code range contain the lines needed to support the finding?",
+        "criteria": {
+          "correct": "The range contains the challenged code and its evidence.",
+          "too_narrow": "The range is missing lines that the finding depends on.",
+          "too_wide": "The range includes unrelated lines beyond what the finding needs.",
+          "wrong_location": "The range points at code unrelated to the finding."
+        }
+      }
+    }
+  },
+  "response": {
+    "status": 200,
+    "content_type": "application/json",
+    "body": {
+      "model": "jev-1.13-free",
+      "answers": {
+        "supported": {
+          "type": "noul",
+          "noul": 0.16
+        },
+        "commentWorthy": {
+          "type": "noul",
+          "noul": 0.26
+        },
+        "rangeQuality": {
+          "type": "choice",
+          "choice": "correct",
+          "confidence": 0.9,
+          "probabilities": {
+            "too_wide": 0.02,
+            "wrong_location": 0,
+            "too_narrow": 0.06,
+            "correct": 0.92
+          }
+        }
+      },
+      "usage": {
+        "input_tokens": 509,
+        "output_tokens": 90
+      },
+      "cost": "0"
+    }
+  },
+  "facts": [
+    "Model echo was the requested string jev-1.13-free, not the versioned TypeSafe id jev-1.13.0.",
+    "The 200 response includes a top-level cost field (string \"0\") that the TypeSafe API reference does not document.",
+    "The choice answer carries choice, probabilities, and confidence with the exact field names from the TypeSafe API reference.",
+    "A noul answer carries only type and noul; there is no confidence field.",
+    "The finding was intentionally weak in this probe, so low supported (0.16) and commentWorthy (0.26) are expected calibration signals, not a contract violation."
+  ],
+  "inference": "The unauthenticated 200 may be limited to the free model, may be temporary, or may apply per-IP. Production must still send Authorization: Bearer <key> and treat 401 as an error."
+}

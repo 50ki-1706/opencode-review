@@ -1,0 +1,13 @@
+diff --git a/src/old-name.ts b/src/new-name.ts
+similarity index 55%
+rename from src/old-name.ts
+rename to src/new-name.ts
+index cf59613..7ba6efa 100644
+--- a/src/old-name.ts
++++ b/src/new-name.ts
+@@ -1,4 +1,4 @@
+ first
+-second
++second changed
+ third
+ fourth

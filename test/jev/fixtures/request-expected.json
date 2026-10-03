@@ -1,0 +1,63 @@
+{
+  "model": "jev-1.13-free",
+  "state": {
+    "skill": {
+      "name": "bug-review",
+      "criteria": "Report only concrete, demonstrated harm. Ignore style preferences unless they cause a defect."
+    },
+    "finding": {
+      "path": "src/counter.ts",
+      "severity": "medium",
+      "title": "Off-by-one in increment",
+      "body": "callers expect increment(0) to return 0, but the function returns 1, so zero-based counters start at one."
+    },
+    "range": {
+      "commitId": "0123456789abcdef0123456789abcdef01234567",
+      "path": "src/counter.ts",
+      "startLine": 2,
+      "endLine": 2,
+      "side": "RIGHT",
+      "code": ["  return n + 1;"]
+    },
+    "evidence": {
+      "contextBefore": ["export function increment(n: number) {"],
+      "contextAfter": ["}", ""],
+      "diffHunks": [
+        "@@ -1,3 +1,3 @@",
+        " export function increment(n: number) {",
+        "-  return n;",
+        "+  return n + 1;",
+        " }"
+      ],
+      "evidenceTruncated": false
+    }
+  },
+  "questions": {
+    "supported": {
+      "type": "noul",
+      "instructions": "Does the presented HEAD code and evidence in `range` and `evidence` support the claim in `finding`?",
+      "criteria": {
+        "true": "The quoted code shows the claimed behavior without further inference.",
+        "false": "The quoted code contradicts the claim, or the claim needs code that is not presented."
+      }
+    },
+    "commentWorthy": {
+      "type": "noul",
+      "instructions": "According to `skill.criteria`, does `finding` describe a concrete harm that warrants an inline review comment?",
+      "criteria": {
+        "true": "A concrete defect or harm with a real trigger and impact.",
+        "false": "A style preference, speculation, or harmlessness."
+      }
+    },
+    "rangeQuality": {
+      "type": "choice",
+      "instructions": "Does `range` contain exactly the code lines needed to support `finding`?",
+      "criteria": {
+        "correct": null,
+        "too_narrow": "The range omits lines the finding depends on.",
+        "too_wide": "The range includes unrelated lines beyond what the finding needs.",
+        "wrong_location": "The range points at code unrelated to the finding."
+      }
+    }
+  }
+}

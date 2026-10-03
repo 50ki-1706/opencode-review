@@ -1,0 +1,16 @@
+{
+  "action": "opened",
+  "number": 43,
+  "pull_request": {
+    "draft": false,
+    "head": {
+      "sha": "3333333333333333333333333333333333333333",
+      "repo": { "full_name": "contributor/forked-repo" }
+    },
+    "base": { "sha": "2222222222222222222222222222222222222222" }
+  },
+  "repository": {
+    "full_name": "example/opencode-review",
+    "private": false
+  }
+}

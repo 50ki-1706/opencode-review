@@ -1,0 +1,38 @@
+{
+  "default": "custom-snippet",
+  "custom-snippet": {
+    "status": 200,
+    "headers": {
+      "X-Mock-Custom": "yes"
+    },
+    "body": {
+      "model": "jev-1.13-free",
+      "answers": {
+        "supported": {
+          "type": "noul",
+          "noul": 0.5
+        },
+        "commentWorthy": {
+          "type": "noul",
+          "noul": 0.5
+        },
+        "rangeQuality": {
+          "type": "choice",
+          "choice": "too_narrow",
+          "confidence": 0.47,
+          "probabilities": {
+            "correct": 0.2,
+            "too_narrow": 0.6,
+            "too_wide": 0.15,
+            "wrong_location": 0.05
+          }
+        }
+      },
+      "usage": {
+        "input_tokens": 1,
+        "output_tokens": 1
+      },
+      "cost": "0"
+    }
+  }
+}

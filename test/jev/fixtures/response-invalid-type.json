@@ -1,0 +1,29 @@
+{
+  "model": "jev-1.13-free",
+  "answers": {
+    "supported": {
+      "type": "boolean",
+      "noul": 0.92
+    },
+    "commentWorthy": {
+      "type": "noul",
+      "noul": 0.81
+    },
+    "rangeQuality": {
+      "type": "choice",
+      "choice": "correct",
+      "confidence": 0.9,
+      "probabilities": {
+        "correct": 0.92,
+        "too_narrow": 0.05,
+        "too_wide": 0.03,
+        "wrong_location": 0.0
+      }
+    }
+  },
+  "usage": {
+    "input_tokens": 509,
+    "output_tokens": 90
+  },
+  "cost": "0"
+}

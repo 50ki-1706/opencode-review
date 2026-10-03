@@ -1,0 +1,32 @@
+{
+  "origin": "https://opencode.ai/zen/v1/systemone",
+  "captured_at": "2026-10-02T15:48:35Z",
+  "precondition": "Two identical unauthenticated requests (no Authorization header) on 2026-10-02 produced the same status and body.",
+  "request": {
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "model": "jev-1.13-free",
+      "questions": {
+        "supported": {
+          "type": "noul",
+          "instructions": "q"
+        }
+      }
+    },
+    "note": "Body intentionally omits state; no Authorization header."
+  },
+  "response": {
+    "status": 422,
+    "content_type": "application/json",
+    "body": {
+      "error": {
+        "type": "server_error",
+        "message": "Error from provider (Console): Upstream request failed: Endpoint is unavailable."
+      }
+    }
+  },
+  "fact": "Observed live on 2026-10-02, deterministic across two requests.",
+  "inference": "Zen maps an upstream/provider validation failure to 422 with a server_error envelope. The TypeSafe API reference describes 422 as request-body validation but does not publish the body shape, so this exact envelope may be Zen-specific and its message may be misleading."
+}

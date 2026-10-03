@@ -1,0 +1,20 @@
+diff --git a/file.ts b/file.ts
+index f8a8ac7..4b75e55 100644
+--- a/file.ts
++++ b/file.ts
+@@ -1,6 +1,6 @@
+ line 01
+ line 02
+-line 03
++line 03 changed
+ line 04
+ line 05
+ line 06
+@@ -35,6 +35,6 @@ line 34
+ line 35
+ line 36
+ line 37
+-line 38
++line 38 changed
+ line 39
+ line 40

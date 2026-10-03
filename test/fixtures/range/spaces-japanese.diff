@@ -1,0 +1,8 @@
+diff --git a/dir with space/ファイル name.ts b/dir with space/ファイル name.ts
+new file mode 100644
+index 0000000..109a021
+--- /dev/null
++++ b/dir with space/ファイル name.ts	
+@@ -0,0 +1,2 @@
++export const x = 1;
++export const y = 2;

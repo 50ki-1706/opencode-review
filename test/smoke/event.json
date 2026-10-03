@@ -1,0 +1,13 @@
+{
+  "action": "opened",
+  "number": 1,
+  "pull_request": {
+    "draft": false,
+    "head": {
+      "sha": "1111111111111111111111111111111111111111",
+      "repo": { "full_name": "example/repo" }
+    },
+    "base": { "sha": "2222222222222222222222222222222222222222" }
+  },
+  "repository": { "full_name": "example/repo" }
+}
