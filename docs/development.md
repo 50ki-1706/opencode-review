@@ -54,7 +54,7 @@ commitメッセージとPRタイトルはConventional Commitsとし、commitlint
 
 `.github/workflows/ci.yml`はmainへのpush / pull_request / 手動実行で、次をubuntu-latest上で行う。
 
-1. `curl -fsSL https://vite.plus | bash`でVite+を導入（installerの出力先は`vp`を探索してPATHへ追加）
+1. `curl -fsSL https://vite.plus | bash`でVite+を導入（CIはinstallerが生成する`~/.config/vite-plus/env`をsourceし、`$XDG_DATA_HOME/vite-plus/bin`（旧レイアウトは`~/.vite-plus/bin`）を`GITHUB_PATH`へ登録する）
 2. `vp install --frozen-lockfile`
 3. `vp run typecheck`、`vp run test`、`vp env exec node --test test/jev/`
 4. `vp run build`と`git diff --exit-code -- dist/`

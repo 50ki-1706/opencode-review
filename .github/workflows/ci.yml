@@ -26,15 +26,21 @@ jobs:
       - name: Install Vite+
         run: |
           curl -fsSL https://vite.plus | bash
-          # The installer writes vp and its shims below $HOME; discover the
-          # binary instead of pinning an install path that can vary.
-          vp_bin="$(command -v vp || true)"
-          if [ -z "$vp_bin" ]; then
-            vp_bin="$(find "$HOME" -maxdepth 5 -type f -name vp -perm -u+x 2>/dev/null | head -n 1)"
+          # The installer splits the layout under the XDG dirs and persists PATH
+          # only through shell profiles, which non-interactive CI shells never
+          # load. The vp entry under bin/ is a symlink, so hunting the binary
+          # with find misses it. Source the generated env file instead.
+          vp_config="${XDG_CONFIG_HOME:-$HOME/.config}/vite-plus"
+          vp_bin="${XDG_DATA_HOME:-$HOME/.local/share}/vite-plus/bin"
+          test -f "$vp_config/env" || { echo "Vite+ env file not found: $vp_config/env"; exit 1; }
+          . "$vp_config/env"
+          vp --version
+          # Later steps run fresh shells and resolve vp through the runner PATH.
+          echo "$vp_bin" >> "$GITHUB_PATH"
+          # Legacy monolithic installs (VP_HOME pinned) keep binaries in ~/.vite-plus/bin.
+          if [ -d "$HOME/.vite-plus/bin" ]; then
+            echo "$HOME/.vite-plus/bin" >> "$GITHUB_PATH"
           fi
-          test -n "$vp_bin" || { echo "vp was not found after installation"; exit 1; }
-          echo "PATH=$(dirname "$vp_bin"):$PATH" >> "$GITHUB_ENV"
-          "$vp_bin" --version
 
       - name: Install dependencies
         run: vp install --frozen-lockfile
