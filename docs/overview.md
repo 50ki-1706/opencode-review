@@ -68,9 +68,9 @@ jobs:
           dry-run: 'false'
           github-token: ${{ github.token }}
         env:
-          JEV_API_KEY: ${{ secrets.JEV_API_KEY }}
-          # OpenCodeのprovider認証は通常不要（Free方針）。有料providerを使う場合だけ専用secretを追加する。
-          # GITHUB_TOKEN等の他secretは子プロセスへ渡さない。
+          OPENCODE_API_KEY: ${{ secrets.OPENCODE_API_KEY }}
+          # OPENCODE_API_KEYはJev gateと`opencode`/`opencode-go` modelのprovider credentialを兼ねる（無料modelでも継承）。
+          # 他の有料providerを使う場合だけ専用secretを追加する。GITHUB_TOKEN等の他secretは子プロセスへ渡さない。
 
       - name: Bug review
         uses: OWNER/opencode-review@v1
@@ -80,7 +80,7 @@ jobs:
           dry-run: 'false'
           github-token: ${{ github.token }}
         env:
-          JEV_API_KEY: ${{ secrets.JEV_API_KEY }}
+          OPENCODE_API_KEY: ${{ secrets.OPENCODE_API_KEY }}
 ```
 
 checkout対象はデフォルトのmerge refではなく、イベントのPR HEAD SHAに合わせる。最新PR情報と一致しなければ投稿しない。PR diffはmerge-baseとこのHEADの比較から構成する。
@@ -103,7 +103,7 @@ Phase 0後に`action.yml`へ落とし込む。追加した値や初期値は実�
 | `timeout-seconds` | 初期案600 | OpenCode実行時間の上限 |
 | `max-findings` | 初期案100 | 1 invocationの受付上限。上限超過を記録 |
 
-Jev資格情報は`JEV_API_KEY`でCoreに渡す。欠如時はrun errorとし、匿名free経路の成功に依存しない。OpenCodeへ渡すprovider環境変数は明示的な許可一覧を用意する。inputやtoken全体をログへ出力しない。
+Jev資格情報は`OPENCODE_API_KEY`（OpenCode発行の共有credential）でCoreに渡す。欠如時はrun errorとし、匿名free経路の成功に依存しない。model providerが`opencode`/`opencode-go`のときは、同じcredentialを子プロセスへ意図的に継承する（D28）。OpenCodeへ渡すprovider環境変数は明示的な許可一覧を用意する。inputやtoken全体をログへ出力しない。
 
 Output案は`accepted-count`、`publishable-count`、`published-count`、`skipped-count`、`result-path`。dry-runでは`published-count = 0`。`result-path`はrunner内の結果ファイルで、自動的に外部公開するものではない。
 

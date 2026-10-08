@@ -232,7 +232,7 @@ Phase 3で確定した最小範囲規則: anchor窓（完全一致した連続�
 
 ここでのJevは**TypeSafe AIのSystem One**と確認済み（2026-10-03、公式docsと実サービス）。公式には`state`と型付き`questions`を送るHTTP APIがあり、Noulは0–1の判断値、Choiceは固定選択肢と`probabilities` / `confidence`を返す。[TypeSafe Introduction](https://docs.typesafe.ai/introduction)、[API reference](https://docs.typesafe.ai/api)
 
-`jev.ts`は標準`fetch`でOpenCode Zen gatewayの`POST https://opencode.ai/zen/v1/systemone`へ`Authorization: Bearer <JEV_API_KEY>`を付けて送信する（endpointはcompile定数、proxy / baseUrlの入力や環境変数はない）。SDKはbundleへ含めない。modelは許可リスト（`jev-1.13-free` / `jev-1.13`）で検証し、応答`model`はrequestのechoを許可する。`cost`は公式未文書のためstring / numberとして受理する。応答は`redirect: "manual"`で受け、3xxはrun error。401は`text/plain`でもbodyをJSON parseして`AuthError`を確認する。Zenでは422がgatewayの`server_error` envelopeで返り得るため、statusだけで分類せずbodyをparseする（`server_error`＝provider障害、`invalid_request_error`または`param`付き＝request invalid）。レート制限のZen側仕様は未文書（UNKNOWN）。質問はプログラム固定の3問（`supported`と`commentWorthy`のNoul、`rangeQuality`のChoiceで`correct`のcriteriaはnull）で、APIの組み込みレビュー機能ではない。
+`jev.ts`は標準`fetch`でOpenCode Zen gatewayの`POST https://opencode.ai/zen/v1/systemone`へ`Authorization: Bearer <OPENCODE_API_KEY>`を付けて送信する（endpointはcompile定数、proxy / baseUrlの入力や環境変数はない）。SDKはbundleへ含めない。modelは許可リスト（`jev-1.13-free` / `jev-1.13`）で検証し、応答`model`はrequestのechoを許可する。`cost`は公式未文書のためstring / numberとして受理する。応答は`redirect: "manual"`で受け、3xxはrun error。401は`text/plain`でもbodyをJSON parseして`AuthError`を確認する。Zenでは422がgatewayの`server_error` envelopeで返り得るため、statusだけで分類せずbodyをparseする（`server_error`＝provider障害、`invalid_request_error`または`param`付き＝request invalid）。レート制限のZen側仕様は未文書（UNKNOWN）。質問はプログラム固定の3問（`supported`と`commentWorthy`のNoul、`rangeQuality`のChoiceで`correct`のcriteriaはnull）で、APIの組み込みレビュー機能ではない。
 
 | Core側の項目 | 質問型 | 判断対象 |
 | --- | --- | --- |

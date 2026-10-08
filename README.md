@@ -13,7 +13,7 @@ OpenCodeがリポジトリ固有のSkillに基づいてPRをレビューし、�
 
 ## 使い方（最短）
 
-[`examples/pr-review.yml`](examples/pr-review.yml)をコピーし、`uses:`を自分のリポジトリのcommit SHA固定へ置き換える。環境変数は`JEV_API_KEY`（必須。欠如は即run error、Actionプロセスのみが読み子プロセスへ渡さない）と`github-token`（既定`${{ github.token }}`）の2つ。無料モデル（`opencode/...`）はprovider key不要で、有料モデルへの自動fallbackはしない。
+[`examples/pr-review.yml`](examples/pr-review.yml)をコピーし、`uses:`を自分のリポジトリのcommit SHA固定へ置き換える。環境変数は`OPENCODE_API_KEY`（必須。欠如は即run error）と`github-token`（既定`${{ github.token }}`）の2つ。`OPENCODE_API_KEY`はOpenCode発行の単一credentialで、Jev publish gateの認証と、model providerが`opencode`/`opencode-go`のとき（無料model含む）のreview model自体に使う。有料providerへの自動fallbackはしない。
 
 ## 開発
 

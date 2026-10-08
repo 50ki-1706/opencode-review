@@ -85,12 +85,12 @@ bash test/smoke/dist-only-smoke.sh
 | `two-skill-check.mjs` | `vp run build`後。ネットワーク不要（ローカルGitHub mock + fake producer + stub Jev） | built distをSkill A/Bで連続実行し、staging cleanup・result file/outputの分離・cross-run artifactなしをassert |
 | `phase6-anchor-live.mjs` | `OPENCODE_CLI`でpinned `@opencode/cli`を指定（既定値はPhase 0のローカルパス）と`opencode/space-bunny-free`等の無料モデルへのネットワーク | 実モデルのanchor verbatim率を確認（ローカルgit fixture、投稿なし） |
 | `live-smoke.ts` | `OPENCODE_CLI`と無料モデルへのネットワーク。`vp env exec node test/live/live-smoke.ts` | Phase 2 producer smoke。`report_finding`経由のNDJSONを表示し、stagingを自分で削除（投稿なし） |
-| `phase5-live.mjs` | scratch PR、`LIVE_REPO` / `LIVE_PR` / `LIVE_WORKSPACE` / `LIVE_EVENT` / `LIVE_RUNNER_TEMP` / `LIVE_GITHUB_TOKEN` / `LIVE_DRY_RUN`、`OPENCODE_CLI`（`LIVE_DRY_RUN=false`は本番投稿） | 本番publisherの実inline投稿/dry-run確認。Jevはtest-only fetchでAuthorizationを除去した匿名経路 |
+| `phase5-live.mjs` | scratch PR、`LIVE_REPO` / `LIVE_PR` / `LIVE_WORKSPACE` / `LIVE_EVENT` / `LIVE_RUNNER_TEMP` / `LIVE_GITHUB_TOKEN` / `LIVE_DRY_RUN` / `OPENCODE_API_KEY`、`OPENCODE_CLI`（`LIVE_DRY_RUN=false`は本番投稿） | 本番publisherの実inline投稿/dry-run確認。Jevはtest-only fetchでAuthorizationを除去した匿名経路 |
 | `phase5-probes.mjs` | `LIVE_REPO` / `LIVE_PR` / `LIVE_GITHUB_TOKEN`。**直接APIへcommentをPOSTする** | 422やstale `commit_id`の応答を直接観察するprobe（pipeline外） |
 | `jev-calibration.mjs` | ネットワーク | Zenの匿名`jev-1.13-free`で判定傾向を確認 |
 | `phase5-fake-cli.mjs` / `two-skill-fake-cli.mjs` | harnessからspawnされるfake producer | 実producer経路（staging/spawn/canary/NDJSON）をモデルなしで検証 |
 
-`JEV_API_KEY`を設定した認証付きJev較正は未完了（残存依存）。`REVIEW_KEEP_ARTIFACTS=1`はproducer stagingを保持するdebug用で、通常は設定しない。
+`OPENCODE_API_KEY`を設定した認証付きJev較正は未完了（残存依存）。`REVIEW_KEEP_ARTIFACTS=1`はproducer stagingを保持するdebug用で、通常は設定しない。
 
 ## 配布時の実行環境
 
