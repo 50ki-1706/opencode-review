@@ -195,14 +195,15 @@ export function readRunnerEnvironment(env: Env): RunnerEnvironment {
 }
 
 /**
- * D24: the authenticated Jev path is mandatory. The anonymous free probe is a
- * calibration fact, never a production fallback, so a missing key fails the run
+ * D24 (variable name per D28): the authenticated Jev path is mandatory. The
+ * anonymous free probe is a calibration fact, never a production fallback, so a
+ * missing OPENCODE_API_KEY (the shared OpenCode credential) fails the run
  * before any producer work or network call.
  */
 export function readJevToken(env: Env): string {
-  const token = (env["JEV_API_KEY"] ?? "").trim();
+  const token = (env["OPENCODE_API_KEY"] ?? "").trim();
   if (token.length === 0) {
-    throw new EnvironmentError(["JEV_API_KEY"]);
+    throw new EnvironmentError(["OPENCODE_API_KEY"]);
   }
   return token;
 }

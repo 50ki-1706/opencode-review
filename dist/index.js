@@ -1469,7 +1469,7 @@ var providerCredentialNames = {
   openrouter: ["OPENROUTER_API_KEY"],
   xai: ["XAI_API_KEY"]
 };
-var forbiddenChildEnvNames = /^(JEV_API_KEY|TYPESAFE_[A-Z0-9_]*|GITHUB_TOKEN|GH_TOKEN)$/;
+var forbiddenChildEnvNames = /^(TYPESAFE_[A-Z0-9_]*|GITHUB_TOKEN|GH_TOKEN)$/;
 function providerFromModel(model) {
   const withoutVariant = model.split("#", 1)[0] ?? model;
   return withoutVariant.split("/", 1)[0] ?? withoutVariant;
@@ -1510,7 +1510,6 @@ function buildChildEnvironment(input) {
   }
   const protectedValues = [
     ...input.protectedValues ?? [],
-    parent["JEV_API_KEY"],
     parent["TYPESAFE_API_KEY"],
     parent["GITHUB_TOKEN"],
     parent["GH_TOKEN"]
@@ -2972,9 +2971,9 @@ function readRunnerEnvironment(env) {
   };
 }
 function readJevToken(env) {
-  const token = (env["JEV_API_KEY"] ?? "").trim();
+  const token = (env["OPENCODE_API_KEY"] ?? "").trim();
   if (token.length === 0) {
-    throw new EnvironmentError(["JEV_API_KEY"]);
+    throw new EnvironmentError(["OPENCODE_API_KEY"]);
   }
   return token;
 }

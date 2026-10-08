@@ -39,7 +39,7 @@ const validEnv = (overrides: Env = {}): Env => ({
   "INPUT_COMMENT-WORTHY-THRESHOLD": "0.6",
   "INPUT_TIMEOUT-SECONDS": "600",
   "INPUT_MAX-FINDINGS": "100",
-  "JEV_API_KEY": "jev-test-token-1234567890",
+  "OPENCODE_API_KEY": "jev-test-token-1234567890",
   ...overrides,
 });
 
@@ -155,19 +155,19 @@ test("github-token is required even for dry-run and never appears in errors", ()
   }
 });
 
-test("readJevToken requires JEV_API_KEY and reports only the name", () => {
+test("readJevToken requires OPENCODE_API_KEY and reports only the name", () => {
   for (const value of [undefined, "", "   "]) {
     try {
-      readJevToken({ "JEV_API_KEY": value });
+      readJevToken({ "OPENCODE_API_KEY": value });
       assert.fail("expected EnvironmentError");
     } catch (error) {
       assert.ok(error instanceof EnvironmentError);
-      assert.deepEqual(error.fields, ["JEV_API_KEY"]);
+      assert.deepEqual(error.fields, ["OPENCODE_API_KEY"]);
       assert.ok(!error.message.includes("undefined"));
     }
   }
   const secret = "tsk_live_secret_value";
-  assert.equal(readJevToken({ "JEV_API_KEY": ` ${secret} ` }), secret);
+  assert.equal(readJevToken({ "OPENCODE_API_KEY": ` ${secret} ` }), secret);
 });
 
 test("several invalid inputs are reported together by name", () => {
@@ -527,16 +527,16 @@ test("missing runner environment variables are reported by name", async (t) => {
   assert.deepEqual(result.error.fields, ["RUNNER_TEMP"]);
 });
 
-test("a missing JEV_API_KEY fails fast with the environment stage (D24)", async (t) => {
+test("a missing OPENCODE_API_KEY fails fast with the environment stage (D24/D28)", async (t) => {
   const event = JSON.parse(readFileSync(new URL("./fixtures/event-opened.json", import.meta.url), "utf8"));
-  const env = await runnerEnv(t, event, { JEV_API_KEY: undefined });
+  const env = await runnerEnv(t, event, { OPENCODE_API_KEY: undefined });
   const result = await run(env);
   assert.equal(result.code, 1);
   if (result.code !== 1) {
     return;
   }
   assert.equal(result.error.stage, "environment");
-  assert.deepEqual(result.error.fields, ["JEV_API_KEY"]);
+  assert.deepEqual(result.error.fields, ["OPENCODE_API_KEY"]);
   // Fail-fast: no result file and no producer work happened.
   assert.throws(() => readFileSync(join(env["RUNNER_TEMP"]!, "review-result.json"), "utf8"));
 });
@@ -554,7 +554,7 @@ test("a Jev run failure stops the run with the jev stage and writes no result", 
   }
   assert.equal(result.error.stage, "jev");
   assert.deepEqual(result.error.fields, ["jev", "auth"]);
-  assert.ok(!result.error.message.includes(env["JEV_API_KEY"]!));
+  assert.ok(!result.error.message.includes(env["OPENCODE_API_KEY"]!));
   assert.throws(() => readFileSync(join(env["RUNNER_TEMP"]!, "review-result.json"), "utf8"));
 });
 

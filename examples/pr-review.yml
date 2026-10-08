@@ -54,9 +54,10 @@ jobs:
           dry-run: 'false'
           github-token: ${{ github.token }}
         env:
-          # Required. JEV_API_KEY is read by the Action process only and is
-          # never passed to the OpenCode child process.
-          JEV_API_KEY: ${{ secrets.JEV_API_KEY }}
+          # Required. Single OpenCode credential: authenticates the Jev publish
+          # gate and, for opencode/opencode-go models (free included), the
+          # review model itself.
+          OPENCODE_API_KEY: ${{ secrets.OPENCODE_API_KEY }}
 
       - name: Bug review
         uses: OWNER/opencode-review@0000000000000000000000000000000000000000 # TODO: replace with the pinned release SHA
@@ -66,4 +67,4 @@ jobs:
           dry-run: 'false'
           github-token: ${{ github.token }}
         env:
-          JEV_API_KEY: ${{ secrets.JEV_API_KEY }}
+          OPENCODE_API_KEY: ${{ secrets.OPENCODE_API_KEY }}

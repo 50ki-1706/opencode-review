@@ -121,7 +121,11 @@ export type ChildEnvironmentInput = {
   canaryMarkerPath: string;
   maxFindings: number;
   recordLimitBytes: number;
-  /** GitHub / Jev values that must never be inherited by the child. */
+  /**
+   * Protected secret values that must never reach the child: TYPESAFE_*,
+   * GITHUB_TOKEN, GH_TOKEN. The shared OpenCode credential is inherited by
+   * design when the provider is opencode/opencode-go, free and paid (D28).
+   */
   protectedValues?: readonly string[];
 };
 
@@ -148,7 +152,7 @@ const providerCredentialNames: Record<string, readonly string[]> = {
   xai: ["XAI_API_KEY"],
 };
 
-const forbiddenChildEnvNames = /^(JEV_API_KEY|TYPESAFE_[A-Z0-9_]*|GITHUB_TOKEN|GH_TOKEN)$/;
+const forbiddenChildEnvNames = /^(TYPESAFE_[A-Z0-9_]*|GITHUB_TOKEN|GH_TOKEN)$/;
 
 export function providerFromModel(model: string): string {
   const withoutVariant = model.split("#", 1)[0] ?? model;
@@ -192,10 +196,10 @@ export function buildChildEnvironment(input: ChildEnvironmentInput): ChildEnviro
     }
   }
 
-  // D24: a child value equal to a protected secret is refused before spawn.
+  // D24/D28: a child value equal to a protected secret (TYPESAFE_*,
+  // GITHUB_TOKEN, GH_TOKEN) is refused before spawn.
   const protectedValues = [
     ...(input.protectedValues ?? []),
-    parent["JEV_API_KEY"],
     parent["TYPESAFE_API_KEY"],
     parent["GITHUB_TOKEN"],
     parent["GH_TOKEN"],

@@ -74,10 +74,30 @@ test("google prefers GEMINI_API_KEY and falls back to GOOGLE_API_KEY", () => {
   assert.equal(google.env["GOOGLE_API_KEY"], "g2");
 });
 
-test("the anonymous opencode provider adds no credential", () => {
+test("the anonymous opencode provider adds no credential when the parent has no key", () => {
   const result = buildChildEnvironment(input({ model: "opencode/space-bunny-free", parentEnv: { PATH: "/usr/bin" } }));
   assert.equal(result.providerKeyName, null);
   assert.equal(Object.keys(result.env).some((name) => name.endsWith("_API_KEY")), false);
+});
+
+test("the OpenCode credential is inherited by design for the free opencode provider (D28)", () => {
+  const secret = "opencode-shared-credential";
+  const result = buildChildEnvironment(input({
+    model: "opencode/space-bunny-free",
+    parentEnv: { PATH: "/usr/bin", OPENCODE_API_KEY: secret },
+  }));
+  assert.equal(result.providerKeyName, "OPENCODE_API_KEY");
+  assert.equal(result.env["OPENCODE_API_KEY"], secret);
+});
+
+test("the OpenCode credential is inherited by design for the paid opencode-go provider (D28)", () => {
+  const secret = "opencode-shared-credential";
+  const result = buildChildEnvironment(input({
+    model: "opencode-go/some-paid-model",
+    parentEnv: { PATH: "/usr/bin", OPENCODE_API_KEY: secret },
+  }));
+  assert.equal(result.providerKeyName, "OPENCODE_API_KEY");
+  assert.equal(result.env["OPENCODE_API_KEY"], secret);
 });
 
 test("an unknown provider adds no credential", () => {
@@ -100,9 +120,9 @@ test("a child value equal to a protected secret refuses to spawn", () => {
   );
 });
 
-test("JEV_API_KEY and GitHub token values are refused when inherited", () => {
+test("TypeSafe and GitHub token values are refused when inherited", () => {
   assert.throws(
-    () => buildChildEnvironment(input({ parentEnv: { PATH: "/usr/bin", OPENAI_API_KEY: "jev-secret", JEV_API_KEY: "jev-secret" } })),
+    () => buildChildEnvironment(input({ parentEnv: { PATH: "/usr/bin", OPENAI_API_KEY: "typesafe-secret", TYPESAFE_API_KEY: "typesafe-secret" } })),
     (error: unknown) => error instanceof ReviewRunError && error.kind === "config",
   );
   assert.throws(
@@ -115,13 +135,12 @@ test("protected environment names never appear in the child environment", () => 
   const result = buildChildEnvironment(input({
     parentEnv: {
       PATH: "/usr/bin",
-      JEV_API_KEY: "jev",
       TYPESAFE_API_KEY: "typesafe",
       GITHUB_TOKEN: "github",
       GH_TOKEN: "gh",
     },
   }));
-  const forbidden = /^(JEV_API_KEY|TYPESAFE_[A-Z0-9_]*|GITHUB_TOKEN|GH_TOKEN)$/;
+  const forbidden = /^(TYPESAFE_[A-Z0-9_]*|GITHUB_TOKEN|GH_TOKEN)$/;
   assert.equal(Object.keys(result.env).some((name) => forbidden.test(name)), false);
 });
 

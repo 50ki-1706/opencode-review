@@ -4,7 +4,7 @@
 // Wire contract (docs/architecture.md "Jev ValidatorとPublish Gate",
 // decisions.md D20/D24, Phase 0 fixtures):
 //   - POST https://opencode.ai/zen/v1/systemone with Content-Type:
-//     application/json and Authorization: Bearer <JEV_API_KEY>.
+//     application/json and Authorization: Bearer <OPENCODE_API_KEY>.
 //   - The body is built by finding.ts (`jevRequestBody`): a fixed `state` and
 //     three program-fixed questions. Finding text never becomes an instruction.
 //   - The response is read as text first and only then JSON.parse'd, because
@@ -329,7 +329,7 @@ async function sendRequest(request: unknown, send: SendOptions): Promise<JevResp
 /**
  * Build one Jev client. The `fetchImpl` / `sleepImpl` fields exist only so the
  * unit suite can point at test/jev/mock-server.mjs deterministically; the
- * Action never passes them (D24: the token comes from JEV_API_KEY only).
+ * Action never passes them (D24/D28: the token comes from OPENCODE_API_KEY only).
  */
 export function createJevClient(options: JevClientOptions): JevClient {
   const send: SendOptions = {

@@ -4,7 +4,7 @@
 # Builds an image that contains only dist/index.js (plus the one-line ESM module
 # declaration) under node:24-alpine and runs it twice:
 #
-#   1. without JEV_API_KEY  -> structured run_error, stage=environment;
+#   1. without OPENCODE_API_KEY -> structured run_error, stage=environment;
 #   2. with a dummy key     -> structured run_error, stage=context (the bundle
 #      reached the GitHub metadata read), proving startup beyond input checks.
 #
@@ -47,11 +47,11 @@ run_case() {
   fi
 }
 
-# No JEV_API_KEY: fail-fast during environment validation, before any network call.
-run_case "missing JEV_API_KEY" environment
+# No OPENCODE_API_KEY: fail-fast during environment validation, before any network call.
+run_case "missing OPENCODE_API_KEY" environment
 
-# Dummy JEV_API_KEY: proceed to the GitHub metadata read; a 401/network failure
+# Dummy OPENCODE_API_KEY: proceed to the GitHub metadata read; a 401/network failure
 # is still a clean structured run_error and proves the bundle started normally.
-run_case "dummy JEV_API_KEY" context -e JEV_API_KEY=smoke-dummy
+run_case "dummy OPENCODE_API_KEY" context -e OPENCODE_API_KEY=smoke-dummy
 
 echo "dist-only smoke: all cases passed"

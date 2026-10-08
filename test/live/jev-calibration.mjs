@@ -2,7 +2,7 @@
 // does not match the Node test-runner patterns).
 //
 // Run with the pinned toolchain (anonymous free model works today; an optional
-// JEV_API_KEY switches to the authenticated request):
+// OPENCODE_API_KEY switches to the authenticated request):
 //   vp env exec node test/live/jev-calibration.mjs
 //
 // It sends 6 hand-authored findings derived from the Phase 2/3 fixture repos
@@ -17,7 +17,7 @@ import { jevQuestions } from "../../src/finding.ts";
 import { createJevClient, JEV_ENDPOINT } from "../../src/jev.ts";
 
 const MODEL = process.env["CALIBRATION_MODEL"] ?? "jev-1.13-free";
-const TOKEN = process.env["JEV_API_KEY"] ?? "";
+const TOKEN = process.env["OPENCODE_API_KEY"] ?? "";
 const DELAY_MS = Number.parseInt(process.env["CALIBRATION_DELAY_MS"] ?? "1500", 10);
 
 const COMMIT_ID = "0123456789abcdef0123456789abcdef01234567";
@@ -182,7 +182,7 @@ console.log(
     event: "calibration-start",
     endpoint: JEV_ENDPOINT,
     model: MODEL,
-    auth: TOKEN.length > 0 ? "JEV_API_KEY" : "anonymous",
+    auth: TOKEN.length > 0 ? "OPENCODE_API_KEY" : "anonymous",
     cases: cases.length,
     startedAt: new Date().toISOString(),
   }),
@@ -239,7 +239,7 @@ console.log(
     finishedAt: new Date().toISOString(),
     endpoint: JEV_ENDPOINT,
     model: MODEL,
-    auth: TOKEN.length > 0 ? "JEV_API_KEY" : "anonymous",
+    auth: TOKEN.length > 0 ? "OPENCODE_API_KEY" : "anonymous",
     thresholds: { supported: 0.7, commentWorthy: 0.6, rangeQuality: "correct" },
     observed: results.map((result) => ({
       case: result.case,

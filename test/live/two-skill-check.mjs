@@ -164,7 +164,7 @@ try {
       "INPUT-COMMENT-WORTHY-THRESHOLD": "0.6",
       "INPUT-TIMEOUT-SECONDS": "60",
       "INPUT-MAX-FINDINGS": "5",
-      JEV_API_KEY: "two-skill-check-jeV-token",
+      OPENCODE_API_KEY: "two-skill-check-jeV-token",
       OPENCODE_CLI: fakeCli,
       GITHUB_EVENT_PATH: eventPath,
       RUNNER_TEMP: runnerTemp,

@@ -148,7 +148,7 @@ async function publisherEnv(t: TestContext, headSha: string): Promise<Env> {
     "INPUT-COMMENT-WORTHY-THRESHOLD": "0.6",
     "INPUT_TIMEOUT-SECONDS": "30",
     "INPUT_MAX-FINDINGS": "10",
-    "JEV_API_KEY": "jev_fixture_token_1234567890",
+    "OPENCODE_API_KEY": "jev_fixture_token_1234567890",
     GITHUB_EVENT_PATH: eventPath,
     RUNNER_TEMP: directory,
     GITHUB_OUTPUT: join(directory, "output.txt"),

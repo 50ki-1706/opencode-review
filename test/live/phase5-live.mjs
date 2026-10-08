@@ -14,10 +14,14 @@
 //   LIVE_GITHUB_TOKEN    token with repo scope (pass via $(gh auth token))
 //   LIVE_DRY_RUN         "true" or "false"
 //   OPENCODE_CLI         path to the pinned @opencode/cli binary
+//   OPENCODE_API_KEY     shared OpenCode credential (Jev gate; producer when the
+//                        model provider is opencode/opencode-go)
 //
-// Jev: production requires a TypeSafe JEV_API_KEY and this project has none, so
-// this harness injects a test-only fetch that STRIPS the Authorization header
-// and uses the anonymous jev-1.13-free path (real service, Phase-4 live fact).
+// OPENCODE_API_KEY is the real OpenCode credential: it satisfies the mandatory
+// Jev token check and flows to the producer through the model provider policy.
+// Jev auth itself stays stripped: the test-only fetch below removes the
+// Authorization header and uses the anonymous jev-1.13-free path (real service,
+// Phase-4 live fact).
 // Everything else — event/context validation, OpenCode producer, range
 // resolution and GitHub publication — is the production pipeline.
 import { readFile } from "node:fs/promises";
@@ -33,6 +37,7 @@ const required = [
   "LIVE_RUNNER_TEMP",
   "LIVE_GITHUB_TOKEN",
   "LIVE_DRY_RUN",
+  "OPENCODE_API_KEY",
 ];
 for (const name of required) {
   if (!process.env[name]) {
@@ -58,7 +63,6 @@ const env = {
   "INPUT-COMMENT-WORTHY-THRESHOLD": "0.6",
   "INPUT_TIMEOUT-SECONDS": process.env.LIVE_TIMEOUT_SECONDS ?? "600",
   "INPUT_MAX-FINDINGS": "10",
-  JEV_API_KEY: "anonymous-live-harness",
   GITHUB_EVENT_PATH: process.env.LIVE_EVENT,
   RUNNER_TEMP: process.env.LIVE_RUNNER_TEMP,
   GITHUB_OUTPUT: join(process.env.LIVE_RUNNER_TEMP, "output.txt"),
