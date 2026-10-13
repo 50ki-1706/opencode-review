@@ -2,8 +2,6 @@
 
 > OpenCode CLI（`opencode run`）にリポジトリ固有の Skill を適用して PR を調査させ、Core が指摘内容とコメント範囲を検証し、Jev（TypeSafe System One 系モデル）の publish gate を通過した finding だけを GitHub の inline review comment として投稿する GitHub Action。
 
-実装は完了しているが、配布はまだ行われていない（`uses:` で参照する公開リポジトリと tag / SHA は存在しない）。
-
 ## これは何か
 
 - **やること**: `pull_request`（opened / synchronize / reopened / ready_for_review）で起動し、1 invocation = 1 Skill = 1 OpenCode session で PR を調査させる。`report_finding` Tool で受け取った候補を Core の Valibot 検証・Range Resolver・Jev publish gate にかけ、通過した 1 finding を 1 件の inline review comment として固定 HEAD の `RIGHT` 側へ投稿する。dry-run は投稿以外の全検証を実行する。
@@ -37,13 +35,13 @@ flowchart TD
 increment() は n + 1 ではなく n - 1 を返しています。呼び出し側は常に 1 少ない値を受け取ります。
 ```
 
-## クイックスタート（テンプレート）
+## クイックスタート
 
-このアクションはまだリリースされていないため、以下はテンプレートです。`uses:` の40桁プレースホルダは、公開後にあなたがレビューしたcommit SHAへ置き換えるまで動作しません
+`uses:` はリリースページに記載の 40 桁 commit SHA へ置き換えてください（`git ls-remote --tags origin` で `refs/tags/v0.1.0^{}` の peel ref から取得した SHA でも可）。
 
 1. [`examples/pr-review.yml`](examples/pr-review.yml) を自分のリポジトリへコピーする。
 2. リポジトリの Actions secret に `OPENCODE_API_KEY` を設定する（取得方法は[API鍵の入手](docs/overview.md#api鍵の入手)）。この 1 つの credential が Jev publish gate の認証と、provider が `opencode` / `opencode-go` の model（無料 model 含む）の review model 認証を兼ねる。有料 provider への自動 fallback はない。
-3. `uses:` を、公開後に自分でレビューした 40 桁の commit SHA へ置き換える（可動 tag ではなく commit SHA 固定を推奨）。
+3. `uses:` を、v0.1.0 リリースの 40 桁 commit SHA へ置き換える（可動 tag ではなく commit SHA 固定を推奨）。
 
 最小構成の例:
 
@@ -74,7 +72,7 @@ jobs:
         run: npm install -g @opencode/cli@2.0.22
 
       - name: Review
-        uses: OWNER/opencode-review@0000000000000000000000000000000000000000  # テンプレート: 公開後に commit SHA へ置換
+        uses: 50ki-1706/opencode-review@v0.1.0  # 本番ではこの tag の 40 桁 commit SHA 固定を推奨（Release ページ参照）
         with:
           skill: security-review
           model: opencode/space-bunny-free

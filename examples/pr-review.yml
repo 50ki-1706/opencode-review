@@ -1,10 +1,9 @@
 # Sample workflow for opencode-review.
 #
-# The Action is not published yet (decisions.md Q09), so the `uses:` lines below
-# keep OWNER and a 40-character placeholder SHA. Before use, replace both with
-# the real repository and a commit SHA you have reviewed. Pin a commit SHA
-# rather than a moving tag, and update it deliberately when a new release is
-# reviewed.
+# The published reference is `50ki-1706/opencode-review@v0.1.0`. For production,
+# replace the tag with the 40-hex commit SHA of the release you have reviewed
+# (see the GitHub Release page) and update it deliberately when a new release
+# is reviewed.
 #
 # One invocation = one Skill = one OpenCode session. The two review steps below
 # are independent: each creates its own staging directory, OpenCode session,
@@ -46,7 +45,7 @@ jobs:
         run: npm install -g @opencode/cli@2.0.22
 
       - name: Security review
-        uses: OWNER/opencode-review@0000000000000000000000000000000000000000 # TODO: replace with the pinned release SHA
+        uses: 50ki-1706/opencode-review@v0.1.0 # TODO: pin to the reviewed v0.1.0 release SHA for production
         with:
           skill: security-review
           # Free-model policy: pick an available opencode/... free model.
@@ -61,7 +60,7 @@ jobs:
           OPENCODE_API_KEY: ${{ secrets.OPENCODE_API_KEY }}
 
       - name: Bug review
-        uses: OWNER/opencode-review@0000000000000000000000000000000000000000 # TODO: replace with the pinned release SHA
+        uses: 50ki-1706/opencode-review@v0.1.0 # TODO: pin to the reviewed v0.1.0 release SHA for production
         with:
           skill: bug-review
           model: opencode/space-bunny-free

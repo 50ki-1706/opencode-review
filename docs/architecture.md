@@ -1,6 +1,6 @@
 # アーキテクチャ
 
-> `opencode-review` の契約を、実行フロー・モジュール構成・型・`report_finding` / NDJSON・Range Resolver・Jev publish gate・publisher / dry-run・トラブルシューティング・既知の制限の順に記述する。実装は完了しており、未リリースの配布物として扱う。
+> `opencode-review` の契約を、実行フロー・モジュール構成・型・`report_finding` / NDJSON・Range Resolver・Jev publish gate・publisher / dry-run・トラブルシューティング・既知の制限の順に記述する。実装は完了しており、v0.1.0 として配布済み（2026-10-13）。
 
 ## 全体構成
 

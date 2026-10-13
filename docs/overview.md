@@ -63,7 +63,7 @@ Jev の credential は `OPENCODE_API_KEY`（OpenCode 発行の単一 credential�
 
 ## 利用イメージ
 
-同一リポジトリの PR を 2 Skill でレビューする例。**未リリースのため `OWNER` と 40 桁 SHA はプレースホルダ**で、公開後は自分でレビューした commit SHA へ置き換える。
+同一リポジトリの PR を 2 Skill でレビューする例。v0.1.0 以降は実参照を使う。例では利便のため tag を示すが、運用では Release ページに記載の 40 桁 commit SHA への固定を推奨する。
 
 ```yaml
 name: Skill review
@@ -96,7 +96,7 @@ jobs:
         run: npm install -g @opencode/cli@2.0.22
 
       - name: Security review
-        uses: OWNER/opencode-review@0000000000000000000000000000000000000000  # 公開後: レビュー済み commit SHA へ置換
+        uses: 50ki-1706/opencode-review@v0.1.0  # 本番ではこの tag の 40 桁 commit SHA 固定を推奨（Release ページ参照）
         with:
           skill: security-review
           model: opencode/space-bunny-free
@@ -108,7 +108,7 @@ jobs:
           # 他の有料providerを使う場合だけ専用secretを追加する。GITHUB_TOKEN等の他secretは子プロセスへ渡さない。
 
       - name: Bug review
-        uses: OWNER/opencode-review@0000000000000000000000000000000000000000
+        uses: 50ki-1706/opencode-review@v0.1.0
         with:
           skill: bug-review
           model: opencode/space-bunny-free
