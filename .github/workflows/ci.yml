@@ -1,8 +1,6 @@
-# CI for the opencode-review repository itself (phase-6-03/04/05/06). This is
-# not the consumer workflow: it gates the distributable bundle. The repository
-# has local developer commits on main but no remote yet, so this workflow starts
-# running from the user's first push. Every step is mirrored by the local
-# commands in docs/development.md.
+# CI for the opencode-review repository itself. This is not the consumer
+# workflow: it gates the distributable bundle. Every step is mirrored by the
+# local commands in docs/development.md.
 name: CI
 
 on:
