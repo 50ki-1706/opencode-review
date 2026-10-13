@@ -1,9 +1,10 @@
 # Sample workflow for opencode-review.
 #
-# The Action is not published yet (decisions.md Q09), so the `uses:` line below
-# keeps a placeholder. Replace OWNER and the 40-character SHA with the real
-# repository and a pinned release commit before use. Pin a commit SHA rather
-# than a moving tag, then update it deliberately when a new release is reviewed.
+# The Action is not published yet (decisions.md Q09), so the `uses:` lines below
+# keep OWNER and a 40-character placeholder SHA. Before use, replace both with
+# the real repository and a commit SHA you have reviewed. Pin a commit SHA
+# rather than a moving tag, and update it deliberately when a new release is
+# reviewed.
 #
 # One invocation = one Skill = one OpenCode session. The two review steps below
 # are independent: each creates its own staging directory, OpenCode session,

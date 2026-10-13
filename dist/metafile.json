@@ -122,7 +122,7 @@
       "format": "esm"
     },
     "src/main.ts": {
-      "bytes": 42364,
+      "bytes": 42274,
       "imports": [
         {
           "path": "node:fs/promises",

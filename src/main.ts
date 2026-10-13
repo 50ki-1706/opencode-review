@@ -1,11 +1,9 @@
-// Action entrypoint: input validation, event validation, ReviewContext and the
-// Phase 3 producer + range resolver pipeline.
-//
-// The pipeline is context -> prepare (GitHub metadata + local git) -> producer
-// (staged OpenCode invocation) -> read canonical Findings -> range resolution
-// -> result artifacts. Jev and the publisher arrive in later phases, so a run
-// that resolved findings still ends in a machine-readable `run_error`; nothing
-// is published from a partial pipeline (docs/architecture.md failure table).
+// Action entrypoint: the complete review pipeline — input validation, event
+// validation, ReviewContext (GitHub metadata + local git), the staged OpenCode
+// producer, canonical Finding validation, range resolution, the Jev publish
+// gate, and the publisher or dry-run. Result artifacts and Action outputs are
+// written on every terminal path; nothing is published from a partial pipeline
+// (docs/architecture.md failure table).
 import { appendFile, readFile, writeFile } from "node:fs/promises";
 import { join } from "node:path";
 import { pathToFileURL } from "node:url";

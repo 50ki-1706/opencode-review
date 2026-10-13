@@ -1,7 +1,8 @@
 // Contract tests for the frozen Jev (System One) HTTP contract and its mock.
 //
-// Response validation is intentionally hand-rolled for Phase 0; Phase 1 replaces it
-// with the Valibot schema in `finding.ts` (see docs/implementation-plan.md).
+// Response validation here is hand-rolled and stays independent from the
+// Valibot schema in `finding.ts` (see docs/architecture.md, "Jev Validatorと
+// Publish Gate").
 //
 // Run with: node --test test/jev/
 

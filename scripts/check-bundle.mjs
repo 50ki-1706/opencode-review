@@ -9,9 +9,8 @@
 //
 //   node scripts/check-bundle.mjs determinism
 //     Rebuild twice with the pinned toolchain and compare sha256. It also fails
-//     when the checked-in dist does not match a fresh build, which is the
-//     no-commit equivalent of `git diff --exit-code dist/` (the repository has
-//     no commits yet; the first commit is user-side).
+//     when the checked-in dist does not match a fresh build, the same invariant
+//     CI enforces with `git diff --exit-code -- dist/`.
 import { spawnSync } from "node:child_process";
 import { createHash } from "node:crypto";
 import { readFile } from "node:fs/promises";
